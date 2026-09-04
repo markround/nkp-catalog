@@ -25,6 +25,7 @@ spec:
     remediation:
       retries: 30
   interval: 15s
+  releaseName: argo-cd
   targetNamespace: ${releaseNamespace}
   upgrade:
     crds: CreateReplace
