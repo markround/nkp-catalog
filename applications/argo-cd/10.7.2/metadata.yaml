@@ -7,7 +7,7 @@ displayName: argo-cd
 licensing:
 - Ultimate
 scope:
-- project
+- workspace
 overview: |-
   # Argo CD Chart
 
