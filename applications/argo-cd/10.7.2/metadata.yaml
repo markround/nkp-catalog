@@ -3,7 +3,7 @@ allowMultipleInstances: false
 category:
 - tools
 description: A declarative, GitOps continuous delivery tool for Kubernetes
-displayName: argo-cd
+displayName: Argo CD
 licensing:
 - Ultimate
 scope:
