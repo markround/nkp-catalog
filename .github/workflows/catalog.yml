@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Validate catalog repository
         run: |
@@ -37,7 +37,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # github.ref_name is the tag name for tag pushes and the branch name
       # for branch pushes. Slashes are not valid in an OCI tag, so branches
@@ -70,7 +70,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Download catalog bundle artifact
         uses: actions/download-artifact@v4
