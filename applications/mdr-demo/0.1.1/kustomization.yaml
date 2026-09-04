@@ -6,3 +6,4 @@ resources:
 - service.yaml
 - index-cm.yaml
 - ingress.yaml
+- dashboard.yaml
