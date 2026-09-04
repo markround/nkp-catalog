@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mdr-demo-dashboard-info
+  namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/application: mdr-demo
+data:
+  dashboardLink: "/mdr-demo"
+  docsLink: "https://github.com/markround/nkp-catalog"
+  name: MDR Demo
+  version: 0.1.0

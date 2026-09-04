@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Nginx Demo App — MDR Catalog</title>
+<style>
+  :root {
+    --void:   #080a14;
+    --deep:   #10132a;
+    --ink:    #e9ebf7;
+    --muted:  #8d93b8;
+    --line:   rgba(255, 255, 255, 0.10);
+    --violet: #7b5cff;
+    --aqua:   #2ee6c5;
+    --green:  #3ddc84;
+    --display: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+    --serif:   Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --mono:    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--void);
+    color: var(--ink);
+    font-family: var(--display);
+    line-height: 1.5;
+  }
+
+  .glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(900px 620px at 12% -8%,  rgba(123, 92, 255, 0.34), transparent 62%),
+      radial-gradient(760px 560px at 92% 12%,  rgba(46, 230, 197, 0.14), transparent 60%),
+      radial-gradient(1000px 700px at 60% 108%, rgba(123, 92, 255, 0.12), transparent 64%),
+      linear-gradient(175deg, var(--deep), var(--void) 58%);
+    animation: drift 22s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(0, -22px, 0) scale(1.045); }
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px 28px 64px;
+  }
+
+  a { color: var(--aqua); }
+
+  :focus-visible {
+    outline: 2px solid var(--aqua);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .origin {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .origin b {
+    font-weight: 600;
+    color: transparent;
+    background: linear-gradient(96deg, var(--violet), var(--aqua));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--green);
+    background: linear-gradient(180deg, rgba(61, 220, 132, 0.16), rgba(61, 220, 132, 0.05));
+    border: 1px solid rgba(61, 220, 132, 0.32);
+    border-radius: 999px;
+    padding: 5px 14px 5px 11px;
+    animation: pill 520ms ease-out 2850ms both;
+  }
+
+  .status span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: beat 2.4s ease-out 3360ms infinite;
+  }
+
+  @keyframes pill {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes beat {
+    0%   { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(61, 220, 132, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0); }
+  }
+
+  /* ---------- hero ---------- */
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    padding: 76px 0 66px;
+  }
+
+  h1 {
+    margin: 0 0 18px;
+    padding-bottom: 0.14em;
+    font-size: clamp(2.9rem, 7.4vw, 5.4rem);
+    font-weight: 700;
+    letter-spacing: -0.038em;
+    line-height: 1.0;
+    color: #ffffff;
+    background: linear-gradient(150deg, #ffffff 18%, #cfc4ff 58%, #7fe9dc 96%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lede {
+    margin: 0 0 20px;
+    max-width: 54ch;
+    font-family: var(--serif);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #c3c8e2;
+  }
+
+  .clock {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .clock b { color: var(--aqua); font-weight: 500; }
+
+  /* ---------- request path ---------- */
+
+  .path {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 26px 24px 22px;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px) 0 0 / 22px 22px,
+      linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px) 0 0 / 22px 22px,
+      linear-gradient(158deg, rgba(123, 92, 255, 0.15), rgba(8, 10, 20, 0.55) 62%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 24px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .path h2 {
+    margin: 0 0 20px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .hop {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 14px;
+  }
+
+  .rail { position: relative; }
+
+  .rail::before {
+    content: "";
+    position: absolute;
+    left: 10px; top: 3px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--violet);
+    box-shadow: 0 0 10px rgba(123, 92, 255, 0.85);
+    animation: dot 420ms ease-out both;
+  }
+
+  .rail::after {
+    content: "";
+    position: absolute;
+    left: 12.5px; top: 13px; bottom: -14px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--violet), var(--aqua));
+    transform: scaleY(0);
+    transform-origin: top;
+    animation: run 400ms linear both;
+  }
+
+  .hop:last-child .rail::after { display: none; }
+
+  .hop:last-child .rail::before {
+    background: var(--aqua);
+    box-shadow: 0 0 12px rgba(46, 230, 197, 0.9);
+  }
+
+  .hop b {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    animation: dot 420ms ease-out both;
+  }
+
+  .hop small {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--muted);
+    padding-bottom: 20px;
+  }
+
+  .hop:last-child small { padding-bottom: 0; }
+
+  @keyframes dot {
+    from { opacity: 0.16; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes run { to { transform: scaleY(1); } }
+
+  .hop:nth-child(2) .rail::before,
+  .hop:nth-child(2) b { animation-delay: 150ms; }
+  .hop:nth-child(2) .rail::after { animation-delay: 400ms; }
+
+  .hop:nth-child(3) .rail::before,
+  .hop:nth-child(3) b { animation-delay: 550ms; }
+  .hop:nth-child(3) .rail::after { animation-delay: 800ms; }
+
+  .hop:nth-child(4) .rail::before,
+  .hop:nth-child(4) b { animation-delay: 950ms; }
+  .hop:nth-child(4) .rail::after { animation-delay: 1200ms; }
+
+  .hop:nth-child(5) .rail::before,
+  .hop:nth-child(5) b { animation-delay: 1350ms; }
+  .hop:nth-child(5) .rail::after { animation-delay: 1600ms; }
+
+  .hop:nth-child(6) .rail::before,
+  .hop:nth-child(6) b { animation-delay: 1750ms; }
+  .hop:nth-child(6) .rail::after { animation-delay: 2000ms; }
+
+  .hop:nth-child(7) .rail::before,
+  .hop:nth-child(7) b { animation-delay: 2150ms; }
+  .hop:nth-child(7) .rail::after { animation-delay: 2400ms; }
+
+  .hop:nth-child(8) .rail::before,
+  .hop:nth-child(8) b { animation-delay: 2550ms; }
+
+  /* ---------- lower band ---------- */
+
+  .band {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  h3 {
+    margin: 0 0 18px;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .cmd {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 10px 10px 14px;
+    margin-bottom: 8px;
+  }
+
+  .cmd code {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: #bfc6ea;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .cmd code::-webkit-scrollbar { display: none; }
+
+  .cmd button {
+    flex: none;
+    font: inherit;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #cdbdff;
+    background: rgba(123, 92, 255, 0.14);
+    border: 1px solid rgba(123, 92, 255, 0.36);
+    border-radius: 4px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background-color 130ms ease, color 130ms ease, border-color 130ms ease;
+  }
+
+  .cmd button:hover {
+    background: rgba(123, 92, 255, 0.3);
+    color: #ffffff;
+  }
+
+  .cmd button.done {
+    color: var(--green);
+    background: rgba(61, 220, 132, 0.15);
+    border-color: rgba(61, 220, 132, 0.4);
+  }
+
+  dl { margin: 0; }
+
+  dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt { color: var(--muted); font-size: 0.875rem; }
+
+  dd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-align: right;
+    color: #c7cdea;
+  }
+
+  footer {
+    padding-top: 36px;
+    font-family: var(--serif);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+
+  @media (max-width: 880px) {
+    .hero, .band { grid-template-columns: 1fr; gap: 40px; }
+    .hero { padding: 48px 0 44px; }
+    .wrap { padding: 22px 20px 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="origin"><b>MDR Catalog</b> demo application, running on NKP</p>
+    <p class="status"><span></span>Serving traffic</p>
+  </header>
+
+  <main class="hero">
+    <div>
+      <h1>NKP Demo App</h1>
+      <p class="lede">This is the landing page for the nginx demo application from the MDR Catalog. It runs as an nginx Deployment on your NKP cluster and serves this page from a Kubernetes ConfigMap.</p>
+      <p class="lede">Nothing here talks to the rest of your cluster. Its only job is to prove the path from ingress to pod works, so you have something real to point a browser at.</p>
+      <p class="clock">Rendered <b id="stamp">just now</b> · open for <b id="uptime">0s</b></p>
+    </div>
+
+    <section class="path" aria-label="How this page reached your browser">
+      <h2>How this page reached you</h2>
+
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>Your browser</b><small>GET /mdr-demo/</small></div>
+      </div>
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>Ingress</b><small>mdr-demo, kommander-traefik, path /mdr-demo, TLS terminates here</small></div>
+      </div>
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>Service</b><small>mdr-demo, ClusterIP :80, selects app=mdr-demo-nginx</small></div>
+      </div>
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>Deployment</b><small>mdr-demo, keeps the nginx pods running and labelled</small></div>
+      </div>
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>Pods</b><small>nginx:1.31-alpine, container port 80, one of them answered</small></div>
+      </div>
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>ConfigMap</b><small>mdr-demo-index-page, mounted read-only at /usr/share/nginx/html/mdr-demo</small></div>
+      </div>
+      <div class="hop">
+        <div class="rail"></div>
+        <div><b>This page</b><small>you are here</small></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="band">
+    <div>
+      <h3>Check it from a terminal</h3>
+      <div class="cmd">
+        <code>kubectl get pods -n &lt;workspace-namespace&gt; -l app=mdr-demo-nginx</code>
+        <button type="button">Copy</button>
+      </div>
+      <div class="cmd">
+        <code>kubectl get deploy/mdr-demo svc/mdr-demo ingress/mdr-demo -n &lt;workspace-namespace&gt;</code>
+        <button type="button">Copy</button>
+      </div>
+      <div class="cmd">
+        <code>kubectl describe configmap mdr-demo-index-page -n &lt;workspace-namespace&gt;</code>
+        <button type="button">Copy</button>
+      </div>
+      <div class="cmd">
+        <code>kubectl port-forward -n &lt;workspace-namespace&gt; svc/mdr-demo 8080:80</code>
+        <button type="button">Copy</button>
+      </div>
+      <div class="cmd">
+        <code>kubectl logs -n &lt;workspace-namespace&gt; -l app=mdr-demo-nginx --tail=20</code>
+        <button type="button">Copy</button>
+      </div>
+      <p class="clock">Swap <b>&lt;workspace-namespace&gt;</b> for the namespace of the NKP workspace you installed into. After a port-forward the page is at <b>localhost:8080/mdr-demo/</b>, not the root.</p>
+    </div>
+
+    <div>
+      <h3>What is deployed</h3>
+      <dl>
+        <div><dt>Catalog entry</dt><dd>MDR Demo</dd></div>
+        <div><dt>Scope</dt><dd>workspace</dd></div>
+        <div><dt>Namespace</dt><dd>${workspaceNamespace}</dd></div>
+        <div><dt>Deployment</dt><dd>mdr-demo · 5 replicas</dd></div>
+        <div><dt>Image</dt><dd>nginx:1.31-alpine</dd></div>
+        <div><dt>Service</dt><dd>mdr-demo · ClusterIP :80</dd></div>
+        <div><dt>Ingress</dt><dd>kommander-traefik · /mdr-demo</dd></div>
+        <div><dt>Page source</dt><dd>cm/mdr-demo-index-page</dd></div>
+        <div><dt>Mounted at</dt><dd>/usr/share/nginx/html/mdr-demo</dd></div>
+        <div><dt>Depends on</dt><dd>mdr-common</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <footer>
+    <!-- footer text here -->
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var start = Date.now();
+  var stamp = document.getElementById('stamp');
+  var uptime = document.getElementById('uptime');
+
+  try {
+    stamp.textContent = new Date().toLocaleTimeString();
+  } catch (e) { /* leave the fallback text */ }
+
+  setInterval(function () {
+    var s = Math.floor((Date.now() - start) / 1000);
+    var m = Math.floor(s / 60);
+    uptime.textContent = m ? m + 'm ' + (s % 60) + 's' : s + 's';
+  }, 1000);
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.cmd button') : null;
+    if (!btn) return;
+
+    var text = btn.parentNode.querySelector('code').textContent;
+
+    var settle = function () {
+      btn.textContent = 'Copied';
+      btn.className = 'done';
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.className = '';
+      }, 1600);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(settle, function () {
+        btn.textContent = 'Select it manually';
+      });
+    } else {
+      var t = document.createElement('textarea');
+      t.value = text;
+      t.style.position = 'fixed';
+      t.style.opacity = '0';
+      document.body.appendChild(t);
+      t.select();
+      try { document.execCommand('copy'); settle(); }
+      catch (err) { btn.textContent = 'Select it manually'; }
+      document.body.removeChild(t);
+    }
+  });
+})();
+</script>
+</body>
+</html>
