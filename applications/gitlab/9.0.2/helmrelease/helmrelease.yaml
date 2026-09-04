@@ -1,0 +1,39 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: ${releaseName}-repository
+  namespace: ${releaseNamespace}
+spec:
+  interval: 6h0m0s
+  url: https://charts.gitlab.io
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitlab
+  namespace: ${releaseNamespace}
+spec:
+  chart:
+    spec:
+      chart: gitlab
+      sourceRef:
+        kind: HelmRepository
+        name: ${releaseName}-repository
+        namespace: ${releaseNamespace}
+      version: 9.0.2
+  install:
+    crds: CreateReplace
+    createNamespace: true
+    remediation:
+      retries: 30
+  interval: 15s
+  releaseName: gitlab
+  targetNamespace: ${releaseNamespace}
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 30
+  valuesFrom:
+  - kind: ConfigMap
+    name: ${releaseName}-config-defaults
+---

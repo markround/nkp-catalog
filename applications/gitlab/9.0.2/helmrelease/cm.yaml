@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    global:
+      # Needs customizing
+      hosts:
+        domain: example.com
+
+      ingress:
+        # NKP already deploys certmanager
+        configureCertmanager: false
+        # Use HAProxy to make SSH access easier
+        class: haproxy
+        # Toggle the TCP configurations and annotations to HAProxy.
+        provider: haproxy
+
+    # NKP already deploys certmanager
+    installCertmanager: false
+
+    # Complains if this is not set, even if we don't use it
+    certmanager-issuer:
+      email: example@example.com
+
+    # Don't use the default nginx ingress controller
+    nginx-ingress:
+      enabled: false
+
+    # Deploy HAProxy for ingress
+    haproxy:
+      install: true
+
+    # NKP already provides a Prometheus stack
+    prometheus:
+      install: false
+
+    gitlab-runner:
+      install: true
+      # Use the self-signed certifcate chain to register
+      certsSecretName: gitlab-wildcard-tls-chain
+      # Needed for DIND
+      runners:
+        config: |
+          [[runners]]
+            [runners.kubernetes]
+              image = "ubuntu:24.04"
+              privileged = true
+            [[runners.kubernetes.volumes.empty_dir]]
+              name = "docker-certs"
+              mount_path = "/certs/client"
+              medium = "Memory"
