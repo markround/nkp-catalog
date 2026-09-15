@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    auth:
+      tokenAuth:
+        enabled: true
+    datastore:
+      cacheSizeLimitMB: 0
+      contentCacheSizeMB: 0
+      metadataCacheSizeMB: 0
+      restoreReadAmplificationThreshold: 0
+      restoreContentDensityThreshold: 0
+    excludedApps:
+    - default
+    - kube-node-lease
+    - kube-public
+    - kube-system

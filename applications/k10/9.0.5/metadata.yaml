@@ -1,0 +1,33 @@
+schema: catalog.nkp.nutanix.com/v1/application-metadata
+allowMultipleInstances: false
+category:
+- backup
+description: Kasten K10 Data Management Platform
+displayName: Kasten K10
+licensing:
+- Ultimate
+scope:
+- workspace
+overview: |-
+  ## Overview
+  Kasten K10 by Veeam is a data management platform purpose-built for Kubernetes. It provides enterprise operations teams with an easy-to-use, scalable and secure system for backup and restore, disaster recovery and application mobility.
+
+  K10 is application-centric: it discovers applications and their dependencies (deployments, configuration and data services) and captures them as a single, consistent unit.
+
+  Source code and documentation can be found here:
+
+  * <https://docs.kasten.io/>
+  * <https://charts.kasten.io/>
+
+  ## Namespace
+  K10 is always installed into the `kasten-io` namespace, regardless of the workspace namespace this application is deployed from. The namespace is created automatically if it does not already exist.
+
+  ## Post-installation
+  Token authentication is enabled by default. Retrieve a token for the K10 dashboard with:
+
+  ```
+  kubectl -n kasten-io get secret $(kubectl -n kasten-io get serviceaccount k10-k10 -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 -d
+  ```
+icon: PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NSIgaGVpZ2h0PSI4NSIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iIzI2MDBGRiIgZD0iTTc5Ljg0OSA4NC45NDdINS4xNTFBNS4xNiA1LjE2IDAgMCAxIDAgNzkuNzk2VjUuMTUyQTUuMTYgNS4xNiAwIDAgMSA1LjE1MiAwaDc0LjY5N0E1LjE2IDUuMTYgMCAwIDEgODUgNS4xNTJ2NzQuNjQ0YTUuMTI2IDUuMTI2IDAgMCAxLTUuMTUxIDUuMTUxIi8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTIyLjEzIDEzLjY2N2E1LjYzIDUuNjMgMCAwIDAtNS42MjQgNS42MjV2NDYuMTUzYTUuNjMgNS42MyAwIDAgMCA1LjYyNSA1LjYyNSA1LjYzIDUuNjMgMCAwIDAgNS42MjQtNS42MjVWMTkuMjkyYy4wNTMtMy4xMDItMi40Ny01LjYyNS01LjYyNC01LjYyNW00MS4wMDEgMGMtMS4zMTQgMC0yLjUyMy40NzMtMy41MjEgMS4zNjdsLTEwLjQwOSA5LjQ2Mi0uMTU3LjE1OC0xNy40IDE1Ljc3Yy0uNjMuNTI1LTEuMzE0IDEuMTU2LTEuMzE0IDIuMDUgMCAxLjE1Ni43ODggMS44NCAxLjUyNCAyLjQxOC4xNTguMTU3LjM2OC4zMTUuNTI2LjQybDEyLjMgMTAuNjE5IDE0LjkzIDEzLjg3N2MxLjEwMy45NDYgMi40NyAxLjQyIDMuODkgMS4yNjJzMi43MzMtLjg0MSAzLjYyNy0xLjk5OGMxLjg5Mi0yLjM2NSAxLjU3Ni01Ljg4Ny0uNjg0LTcuODMyTDQ1LjczMyA0Mi4zNjlsMTAuMDkzLTkuMTQ3YTIuMyAyLjMgMCAwIDAgLjM2OC0uMzE1bDEwLjQ2LTkuNTE1YzIuMjA4LTEuOTk3IDIuNDcxLTUuNTIuNTI2LTcuODMyLS45NDYtMS4xMDQtMi4yNi0xLjc4OC0zLjY4LTEuODkzeiIvPjwvc3ZnPg==
+
+---
