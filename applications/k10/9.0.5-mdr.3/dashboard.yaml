@@ -9,5 +9,5 @@ metadata:
 data:
   dashboardLink: "/k10/"
   docsLink: "https://github.com/markround/nkp-catalog"
-  name: MDR Demo
-  version: 9.0.5-mdr.1
+  name: Kasten K10
+  version: 9.0.5-mdr.3
