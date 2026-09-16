@@ -5,3 +5,4 @@ resources:
 - helmrelease.yaml
 - ingress.yaml
 - dashboard.yaml
+- snapshot-class-annotator.yaml

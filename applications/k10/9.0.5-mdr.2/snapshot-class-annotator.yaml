@@ -1,0 +1,102 @@
+---
+# One-off job that tags the Nutanix VolumeSnapshotClass as the one K10 should
+# use for CSI snapshots. K10 looks for the k10.kasten.io/is-snapshot-class
+# annotation when deciding which VolumeSnapshotClass backs a policy.
+#
+# The job is a no-op (exit 0) on clusters where the nutanix-snapshot-class
+# VolumeSnapshotClass or the snapshot CRDs themselves are not present.
+#
+# TODO - extend this for other providers (AKS, EKS, vSphere etc.)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ${releaseName}-snapshot-class-annotator
+  namespace: kasten-io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ${releaseName}-snapshot-class-annotator
+rules:
+# VolumeSnapshotClasses are cluster scoped, so this cannot be a namespaced Role
+- apiGroups:
+  - snapshot.storage.k8s.io
+  resources:
+  - volumesnapshotclasses
+  verbs:
+  - get
+  - patch
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ${releaseName}-snapshot-class-annotator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ${releaseName}-snapshot-class-annotator
+subjects:
+- kind: ServiceAccount
+  name: ${releaseName}-snapshot-class-annotator
+  namespace: kasten-io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  # Job specs are immutable, so the app version is part of the name. A catalog
+  # upgrade creates a new job and prunes this one rather than failing to apply.
+  name: ${releaseName}-snapshot-class-annotator-9-0-5-mdr-1
+  namespace: kasten-io
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: ${releaseName}-snapshot-class-annotator
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: ${releaseName}-snapshot-class-annotator
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: kubectl
+        image: docker.io/alpine/kubectl:1.33.4
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -eu
+          CLASS=nutanix-snapshot-class
+          if ! kubectl get volumesnapshotclass "$CLASS" >/dev/null 2>&1; then
+            echo "VolumeSnapshotClass $CLASS not found, nothing to do"
+            exit 0
+          fi
+          kubectl annotate volumesnapshotclass "$CLASS" \
+            k10.kasten.io/is-snapshot-class="true" --overwrite
+        env:
+        # kubectl writes its discovery cache under $HOME
+        - name: HOME
+          value: /tmp
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+      volumes:
+      - name: tmp
+        emptyDir: {}
