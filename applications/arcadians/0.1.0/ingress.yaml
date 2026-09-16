@@ -1,0 +1,40 @@
+---
+# The game derives its API base from the page path, so /arcadians must keep its
+# trailing slash. Redirect the bare form before the prefix is stripped.
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: arcadians-add-slash
+  namespace: retro-game
+spec:
+  redirectRegex:
+    regex: ^(https?://[^/]+)/arcadians$
+    replacement: ${1}/arcadians/
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: arcadians-strip-path
+  namespace: retro-game
+spec:
+  stripPrefix:
+    prefixes:
+      - /arcadians
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: arcadians
+  namespace: retro-game
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: PathPrefix(`/arcadians`)
+      middlewares:
+        - name: arcadians-add-slash
+        - name: arcadians-strip-path
+      services:
+        - name: arcadians-game
+          port: 8080

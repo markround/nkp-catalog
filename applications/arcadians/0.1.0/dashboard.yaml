@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arcadians-dashboard-info
+  namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/application: arcadians
+data:
+  dashboardLink: "/arcadians/"
+  docsLink: "https://github.com/markround/nkp-catalog"
+  name: Arcadians
+  version: 0.1.0
