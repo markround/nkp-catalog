@@ -27,7 +27,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Dynatrace Operator](applications/dynatrace-operator/1.6.1/) | 1.6.1 | observability | `oci://public.ecr.aws/dynatrace/dynatrace-operator` |
 | [ECK Operator](applications/eck-operator/3.5.0/) | 3.5.0 | logging | `https://helm.elastic.co` |
 | [GitLab](applications/gitlab/9.0.2/) | 9.0.2 | general | `https://charts.gitlab.io` |
-| [Kasten K10](applications/k10/9.0.5-mdr.3/) | 9.0.5-mdr.3 | backup | `https://charts.kasten.io/` |
+| [Kasten K10](applications/k10/9.0.5-mdr.4/) | 9.0.5-mdr.4 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.1/) | 0.1.1 | general | _(plain manifests)_ |
 
