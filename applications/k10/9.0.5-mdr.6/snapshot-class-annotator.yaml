@@ -1,12 +1,17 @@
 ---
-# One-off job that tags the Nutanix VolumeSnapshotClass as the one K10 should
-# use for CSI snapshots. K10 looks for the k10.kasten.io/is-snapshot-class
-# annotation when deciding which VolumeSnapshotClass backs a policy.
+# One-off job that makes sure K10 has a VolumeSnapshotClass to use for CSI
+# snapshots. K10 looks for the k10.kasten.io/is-snapshot-class annotation when
+# deciding which VolumeSnapshotClass backs a policy.
 #
-# The job is a no-op (exit 0) on clusters where the nutanix-snapshot-class
-# VolumeSnapshotClass or the snapshot CRDs themselves are not present.
+# - Nutanix: annotates the existing nutanix-snapshot-class.
+# - Azure (AKS): if a StorageClass uses the disk.csi.azure.com provisioner,
+#   applies azure-volumesnapshotclass.yaml (mounted from a ConfigMap). This is
+#   done here rather than by Flux so the class only exists on AKS clusters.
 #
-# TODO - extend this for other providers (AKS, EKS, vSphere etc.)
+# The job is a no-op (exit 0) on clusters where neither applies, or where the
+# snapshot CRDs themselves are not present.
+#
+# TODO - extend this for other providers (EKS, vSphere etc.)
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -25,8 +30,15 @@ rules:
   - volumesnapshotclasses
   verbs:
   - get
+  - create
   - patch
   - update
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -46,7 +58,7 @@ kind: Job
 metadata:
   # Job specs are immutable, so the app version is part of the name. A catalog
   # upgrade creates a new job and prunes this one rather than failing to apply.
-  name: ${releaseName}-snapshot-class-annotator-9-0-5-mdr-5
+  name: ${releaseName}-snapshot-class-annotator-9-0-5-mdr-6
   namespace: kasten-io
 spec:
   backoffLimit: 3
@@ -71,13 +83,27 @@ spec:
         - -c
         - |
           set -eu
-          CLASS=nutanix-snapshot-class
-          if ! kubectl get volumesnapshotclass "$CLASS" >/dev/null 2>&1; then
-            echo "VolumeSnapshotClass $CLASS not found, nothing to do"
+          if ! kubectl api-resources --api-group=snapshot.storage.k8s.io -o name \
+              | grep -q '^volumesnapshotclasses'; then
+            echo "Snapshot CRDs not installed, nothing to do"
             exit 0
           fi
-          kubectl annotate volumesnapshotclass "$CLASS" \
-            k10.kasten.io/is-snapshot-class="true" --overwrite
+
+          CLASS=nutanix-snapshot-class
+          if kubectl get volumesnapshotclass "$CLASS" >/dev/null 2>&1; then
+            kubectl annotate volumesnapshotclass "$CLASS" \
+              k10.kasten.io/is-snapshot-class="true" --overwrite
+          else
+            echo "VolumeSnapshotClass $CLASS not found, skipping"
+          fi
+
+          if kubectl get storageclass \
+              -o jsonpath='{range .items[*]}{.provisioner}{"\n"}{end}' \
+              | grep -qx disk.csi.azure.com; then
+            kubectl apply -f /snapshot-classes/azure-volumesnapshotclass.yaml
+          else
+            echo "No disk.csi.azure.com StorageClass found, skipping Azure"
+          fi
         env:
         # kubectl writes its discovery cache under $HOME
         - name: HOME
@@ -91,6 +117,9 @@ spec:
         volumeMounts:
         - name: tmp
           mountPath: /tmp
+        - name: snapshot-classes
+          mountPath: /snapshot-classes
+          readOnly: true
         resources:
           requests:
             cpu: 10m
@@ -100,3 +129,6 @@ spec:
       volumes:
       - name: tmp
         emptyDir: {}
+      - name: snapshot-classes
+        configMap:
+          name: ${releaseName}-snapshot-classes

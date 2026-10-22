@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- namespace.yaml
+- helmrelease.yaml
+- ingress.yaml
+- dashboard.yaml
+- snapshot-class-annotator.yaml
+# Applied conditionally by the snapshot-class-annotator job, not by Flux
+configMapGenerator:
+- name: ${releaseName}-snapshot-classes
+  namespace: kasten-io
+  files:
+  - azure-volumesnapshotclass.yaml
+  options:
+    # The job references this by name, and job specs are immutable
+    disableNameSuffixHash: true
