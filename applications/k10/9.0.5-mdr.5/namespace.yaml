@@ -1,0 +1,15 @@
+---
+# K10 must run in kasten-io. The HelmRelease would create it (createNamespace),
+# but the ingress and snapshot-class-annotator job in this kustomization also
+# live in kasten-io and are applied before the HelmRelease has reconciled.
+# Flux applies Namespaces before namespaced objects, so declaring it here makes
+# sure it exists first.
+#
+# Pruning is disabled to match Helm's createNamespace behaviour: uninstalling
+# the app leaves the namespace (and anything K10 left in it) in place.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kasten-io
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled

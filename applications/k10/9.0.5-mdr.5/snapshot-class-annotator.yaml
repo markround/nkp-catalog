@@ -46,7 +46,7 @@ kind: Job
 metadata:
   # Job specs are immutable, so the app version is part of the name. A catalog
   # upgrade creates a new job and prunes this one rather than failing to apply.
-  name: ${releaseName}-snapshot-class-annotator-9-0-5-mdr-1
+  name: ${releaseName}-snapshot-class-annotator-9-0-5-mdr-5
   namespace: kasten-io
 spec:
   backoffLimit: 3
