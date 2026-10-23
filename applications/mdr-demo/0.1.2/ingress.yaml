@@ -16,5 +16,5 @@ spec:
             name: mdr-demo
             port:
               number: 80
-        path: /mdr-demo
+        path: /mdr/demo
         pathType: ImplementationSpecific

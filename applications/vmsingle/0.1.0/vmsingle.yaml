@@ -1,0 +1,22 @@
+---
+# Reconciled by the victoria-metrics-operator app, which this app depends on.
+# The operator creates a Deployment, Service (vmsingle-victoria-metrics:8428)
+# and PVC from this resource.
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMSingle
+metadata:
+  name: victoria-metrics
+  namespace: ${workspaceNamespace}
+spec:
+  # Months, unless a unit suffix (h, d, w, y) is given
+  retentionPeriod: "1"
+  extraArgs:
+    # Serve everything (UI, API, health) under this prefix so it can sit
+    # behind a path-based ingress. The operator adjusts its probes to match.
+    http.pathPrefix: /mdr/vmsingle
+  storage:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi

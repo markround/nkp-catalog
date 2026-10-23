@@ -15,6 +15,8 @@ skip_types:
 # load additional CRDs (URLs of CRD yaml files)
 additional_crds:
   - https://raw.githubusercontent.com/cert-manager/cert-manager/master/deploy/crds/cert-manager.io_clusterissuers.yaml
+  # Full-schema CRDs for the operator version in victoria-metrics-operator 0.68.1
+  - https://raw.githubusercontent.com/VictoriaMetrics/operator/v0.75.0/config/crd/overlay/crd.yaml
 
 # set values for substitution variables (e.g. ${releaseNamespace}) in the resources
 substitution_vars:

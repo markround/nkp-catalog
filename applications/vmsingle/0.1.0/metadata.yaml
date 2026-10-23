@@ -1,0 +1,29 @@
+---
+schema: catalog.nkp.nutanix.com/v1/application-metadata
+allowMultipleInstances: false
+category:
+- observability
+description: Single-node VictoriaMetrics instance
+displayName: VictoriaMetrics Single
+icon: PHN2ZyBmaWxsPSIjNjIxNzczIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+VmljdG9yaWFNZXRyaWNzPC90aXRsZT48cGF0aCBkPSJNMS44OTMgMy4wNzhDLjIzOSAxLjUzNyA0Ljg0Ni4wMDkgMTEuOTYzIDBoLjA3NmM3LjExNi4wMDkgMTEuNzIzIDEuNTM3IDEwLjA2NyAzLjA3OCAwIDAtNi4xNjggNS42NTUtOC4zMDEgNy40NzMtLjQwNC4zNDYtMS4wODQuNjA3LTEuNzY2LjYxNmgtLjA3NmMtLjY4Mi0uMDA5LTEuMzYyLS4yNzEtMS43NjctLjYxNi0yLjEzMi0xLjgxOC04LjMwMS03LjQ3My04LjMwMy03LjQ3M1ptMjAuNTQ5IDIuNzcxVjguNThjMCAuMy0uMTE1LjY5OC0uMzE5Ljg4NS0xLjMzMiAxLjIyMi02LjQ3IDUuOTI1LTguMzE5IDcuNTAyLS40MDUuMzQ1LTEuMDg1LjYwNi0xLjc2Ny42MTVoLS4wNzJjLS42ODMtLjAwOS0xLjM2Mi0uMjctMS43NjctLjYxNS0xLjg0OS0xLjU3Ny02Ljk4Ny02LjI4LTguMzItNy41MDItLjIwNC0uMTg3LS4zMTgtLjU4NS0uMzE4LS44ODVWNS44NDljMS45NiAxLjc4OCA3LjE2MyA2LjUwNSA4LjYzOCA3Ljc2NC40MDQuMzQ2IDEuMDg0LjYwNyAxLjc2Ny42MTZoLjA3MmMuNjgyLS4wMDkgMS4zNjItLjI3MSAxLjc2Ny0uNjE2IDEuNDc0LTEuMjU4IDYuNjc4LTUuOTczIDguNjM4LTcuNzY0Wm0wIDYuNDE4djIuNzNjMCAuMzAxLS4xMTUuNjk4LS4zMTkuODg1LTEuMzMyIDEuMjIyLTYuNDcgNS45MjYtOC4zMTkgNy41MDItLjQwNS4zNDYtMS4wODUuNjA3LTEuNzY3LjYxNmgtLjA3MmMtLjY4My0uMDA5LTEuMzYyLS4yNzEtMS43NjctLjYxNi0xLjg0OS0xLjU3Ni02Ljk4Ny02LjI4LTguMzItNy41MDItLjIwNC0uMTg3LS4zMTgtLjU4NS0uMzE4LS44ODV2LTIuNzNjMS45NiAxLjc4OCA3LjE2MyA2LjUwNSA4LjYzOCA3Ljc2NC40MDQuMzQ2IDEuMDg0LjYwNiAxLjc2Ny42MTVoLjA3MmMuNjgyLS4wMDkgMS4zNjItLjI3IDEuNzY3LS42MTUgMS40NzQtMS4yNTggNi42NzgtNS45NzYgOC42MzgtNy43NjRaIi8+PC9zdmc+
+licensing:
+- Ultimate
+overview: |-
+  ## Overview
+  Deploys a single-node VictoriaMetrics time series database into the workspace namespace, using a `VMSingle` custom resource managed by the VictoriaMetrics Operator.
+
+  VictoriaMetrics is a fast, cost-effective and scalable time series database and monitoring solution. It accepts data via Prometheus remote write and other common ingestion protocols, and can be queried with PromQL or MetricsQL.
+
+  The instance is called `victoria-metrics`. It keeps 1 month of data on a 10Gi persistent volume from the default StorageClass, and is reachable inside the cluster at `vmsingle-victoria-metrics.<workspace-namespace>.svc:8428/mdr/vmsingle` (the UI is at `/mdr/vmsingle/vmui/`).
+
+  This application requires the VictoriaMetrics Operator application to be enabled in the same workspace.
+
+  Source code and documentation can be found here:
+
+  * <https://docs.victoriametrics.com/victoriametrics/single-server-victoriametrics/>
+  * <https://docs.victoriametrics.com/operator/resources/vmsingle/>
+  * <https://github.com/VictoriaMetrics/VictoriaMetrics>
+scope:
+- workspace
+dependencies:
+- victoria-metrics-operator

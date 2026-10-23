@@ -31,6 +31,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.1/) | 0.1.1 | general | _(plain manifests)_ |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
+| [VictoriaMetrics Single](applications/vmsingle/0.1.0/) | 0.1.0 | observability | _(plain manifests)_ |
 
 All applications are workspace-scoped and require a NKP Ultimate licence (as you can't add custom catalogs on anything less than NKP Ultimate).
 
@@ -40,6 +41,7 @@ A few notes on the less obvious/non-upstream project entries:
 * **Arcadians** - a retro Galaxian-style game ([original](https://github.com/jdtate101/Arcadians) by James Tate, [my fork](https://github.com/markround/Arcadians)) packaged as a stateful demo app: a HTML5 frontend, a FastAPI backend and a PostgreSQL database for persistent high scores. Used to demo backup/restore and migration of stateful workloads. Always deploys into the `retro-game` namespace.
 * **MDR Common** - a demo app to show how you could deploy shared manifests you want available on all clusters (currently just a demo CA certificate secret).
 * **MDR Demo** - a trivial Nginx app used to show ingress and dashboard capabilities. It declares a dependency on `mdr-common`.
+* **VictoriaMetrics Single** - a single-node VictoriaMetrics instance (a `VMSingle` resource) deployed into the workspace namespace. It declares a dependency on `victoria-metrics-operator`.
 
 ## Installation
 
