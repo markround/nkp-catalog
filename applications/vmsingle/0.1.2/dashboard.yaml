@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mdr-vmsingle-dashboard-info
+  namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/application: vmsingle
+data:
+  dashboardLink: "/mdr/vmsingle/vmui/"
+  docsLink: "https://github.com/markround/nkp-catalog"
+  name: VictoriaMetrics Single
+  version: 0.1.2
