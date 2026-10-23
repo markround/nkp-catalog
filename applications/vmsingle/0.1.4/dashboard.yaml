@@ -10,4 +10,4 @@ data:
   dashboardLink: "/mdr/vmsingle/vmui/"
   docsLink: "https://github.com/markround/nkp-catalog"
   name: VictoriaMetrics Single
-  version: 0.1.2
+  version: 0.1.4
