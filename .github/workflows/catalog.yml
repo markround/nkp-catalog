@@ -8,7 +8,7 @@ on:
       - '**'
 
 env:
-  DISTRIBUTOR_IMAGE: mesosphere/nkp-distributor-linux:v2.18.0
+  DISTRIBUTOR_IMAGE: mesosphere/nkp-distributor-linux:v2.19.0
   CATALOG_REGISTRY: ghcr.io/markround/nkp-catalog
 
 jobs:
