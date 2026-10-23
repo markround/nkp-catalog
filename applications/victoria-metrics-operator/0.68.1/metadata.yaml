@@ -1,0 +1,24 @@
+schema: catalog.nkp.nutanix.com/v1/application-metadata
+allowMultipleInstances: false
+category:
+- observability
+description: VictoriaMetrics Operator on Kubernetes
+displayName: VictoriaMetrics Operator
+licensing:
+- Ultimate
+scope:
+- workspace
+overview: |-
+  ## Overview
+  The VictoriaMetrics Operator deploys and manages VictoriaMetrics components on Kubernetes. VictoriaMetrics is a fast, cost-effective and scalable time series database and monitoring solution, compatible with Prometheus and its query language.
+
+  The operator adds custom resources for running single-node (`VMSingle`) or clustered (`VMCluster`) VictoriaMetrics, metric collection (`VMAgent`), alerting (`VMAlert`, `VMAlertmanager`) and VictoriaLogs. It can also convert existing Prometheus Operator objects such as `ServiceMonitor`, `PodMonitor` and `PrometheusRule` into their VictoriaMetrics equivalents.
+
+  This application installs only the operator and its CRDs. Create VictoriaMetrics custom resources afterwards to deploy the components you need.
+
+  Source code and documentation can be found here:
+
+  * <https://docs.victoriametrics.com/operator/>
+  * <https://github.com/VictoriaMetrics/operator>
+  * <https://github.com/VictoriaMetrics/helm-charts/tree/master/charts/victoria-metrics-operator>
+icon: PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJtNDAuNiA2NS42IDE3NC4xIDE1Ni43YzIzLjkgMjEuNSA2MC4xIDIxLjQgODMuOS0uMUw0NzEuNCA2NS42QzUwNi43IDMyLjggNDA4LjYuMiAyNTYuOCAwaC0xLjZDMTAzLjUuMiA1LjMgMzIuOCA0MC42IDY1LjZtLTcuMiAxMzAgMTgxLjMgMTYzLjJjMjMuOSAyMS41IDYwLjEgMjEuNCA4My45LS4xbDE4MC4xLTE2My4xdi03MS4yTDI4OS40IDI5NS44Yy0xOC42IDE2LjktNDYuOSAxNi45LTY1LjUuMUwzMy40IDEyNC40em0xODEuMyAzMDAuM0w0My44IDM0MmMtNi43LTUuOS0xMC40LTE0LjUtMTAuNC0yMy40di01Ny4xTDIyNCA0MzMuMWMxOC42IDE2LjggNDYuOSAxNi44IDY1LjUtLjFsMTg5LjItMTcxLjR2NTcuMmMwIDguOC0zLjcgMTcuMy0xMC4zIDIzLjNMMjk4LjUgNDk1LjljLTIzLjcgMjEuNC01OS45IDIxLjUtODMuOCAwIi8+PC9zdmc+
