@@ -29,9 +29,9 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [GitLab](applications/gitlab/9.0.2/) | 9.0.2 | general | `https://charts.gitlab.io` |
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
-| [MDR Demo](applications/mdr-demo/0.1.1/) | 0.1.1 | general | _(plain manifests)_ |
+| [MDR Demo](applications/mdr-demo/0.1.1/) | 0.1.2 | general | _(plain manifests)_ |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
-| [VictoriaMetrics Single](applications/vmsingle/0.1.0/) | 0.1.0 | observability | _(plain manifests)_ |
+| [VictoriaMetrics Single](applications/vmsingle/0.1.0/) | 0.1.4 | observability | _(plain manifests)_ |
 
 All applications are workspace-scoped and require a NKP Ultimate licence (as you can't add custom catalogs on anything less than NKP Ultimate).
 
@@ -45,7 +45,7 @@ A few notes on the less obvious/non-upstream project entries:
 
 ## Installation
 
-Requires **NKP Ultimate**. Currently only tested on **NKP 2.18**.
+Requires **NKP Ultimate**. Currently only tested on **NKP >= 2.18**.
 
 Deploying into `kommander-workspace` makes the catalog available across all workspaces and
 projects.
@@ -64,7 +64,7 @@ Or pick a released tag with (theoretically!) less chance of breakage:
 ```bash
 nkp create catalog-collection \
   --url oci://ghcr.io/markround/nkp-catalog/catalog/collection \
-  --tag 0.0.8 \
+  --tag 0.1.0 \
   --workspace kommander-workspace
 ```
 
@@ -82,6 +82,6 @@ kubectl patch \
   --type merge \
   -n kommander \
   ocirepository catalog-collection \
-  --patch '{"spec": {"ref":{"tag":"0.0.8"}}}'
+  --patch '{"spec": {"ref":{"tag":"0.1.0"}}}'
 ```
 
