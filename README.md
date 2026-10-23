@@ -29,9 +29,9 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [GitLab](applications/gitlab/9.0.2/) | 9.0.2 | general | `https://charts.gitlab.io` |
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
-| [MDR Demo](applications/mdr-demo/0.1.1/) | 0.1.2 | general | _(plain manifests)_ |
+| [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
-| [VictoriaMetrics Single](applications/vmsingle/0.1.0/) | 0.1.4 | observability | _(plain manifests)_ |
+| [VictoriaMetrics Single](applications/vmsingle/0.1.4/) | 0.1.4 | observability | _(plain manifests)_ |
 
 All applications are workspace-scoped and require a NKP Ultimate licence (as you can't add custom catalogs on anything less than NKP Ultimate).
 
