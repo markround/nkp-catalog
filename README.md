@@ -37,7 +37,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 All applications are workspace-scoped and require a NKP Ultimate licence (as you can't add custom catalogs on anything less than NKP Ultimate).
 
 > [!NOTE]
-> The version number reported is typically the version of the upstream Helm chart, not the buncled application.
+> The version number reported is typically the version of the upstream Helm chart, not the bundled application.
 
 A few notes on the less obvious/non-upstream project entries:
 
