@@ -1,0 +1,18 @@
+# Global default
+* @markround
+
+# Application owners
+/applications/acme-issuers @markround
+/applications/arcadians @markround
+/applications/argo-cd @markround
+/applications/dynatrace-operator @markround
+/applications/eck-operator @markround
+/applications/elasticsearch @markround
+/applications/gitlab @markround
+/applications/k10 @markround
+/applications/kibana @markround
+/applications/mdr-common @markround
+/applications/mdr-demo @markround
+/applications/valkey @markround
+/applications/victoria-metrics-operator @markround
+/applications/vmsingle @markround
