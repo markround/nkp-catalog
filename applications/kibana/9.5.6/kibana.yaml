@@ -1,0 +1,28 @@
+---
+# Reconciled by the eck-operator app, which this app depends on.
+# The operator creates a Deployment and Service (kibana-kb-http:5601, plain HTTP)
+# from this resource, connected to the cluster from the elasticsearch app.
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana
+  namespace: ${workspaceNamespace}
+spec:
+  # Must not be newer than the Elasticsearch version
+  version: 9.5.6
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch
+  config:
+    # Serve everything under this prefix so it can sit behind a path-based
+    # ingress. ECK adjusts the readiness probe to match.
+    server.basePath: /mdr/kibana
+    server.rewriteBasePath: true
+  http:
+    service:
+      spec:
+        type: ClusterIP
+    # Disable self-signed cert and therefore TLS as will be handled by Ingress
+    tls:
+      selfSignedCertificate:
+        disabled: true
