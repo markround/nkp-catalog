@@ -1,11 +1,13 @@
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: ${releaseName}-repository
+  name: ${releaseName}-chart
   namespace: ${releaseNamespace}
 spec:
   interval: 6h0m0s
-  url: https://charts.gitlab.io
+  ref:
+    tag: 9.11.16
+  url: oci://registry.gitlab.com/charts/charts.gitlab.io/release/gitlab
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -13,14 +15,10 @@ metadata:
   name: gitlab
   namespace: ${releaseNamespace}
 spec:
-  chart:
-    spec:
-      chart: gitlab
-      sourceRef:
-        kind: HelmRepository
-        name: ${releaseName}-repository
-        namespace: ${releaseNamespace}
-      version: 9.0.2
+  chartRef:
+    kind: OCIRepository
+    name: ${releaseName}-chart
+    namespace: ${releaseNamespace}
   install:
     crds: CreateReplace
     createNamespace: true

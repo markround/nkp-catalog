@@ -26,7 +26,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Argo CD](applications/argo-cd/10.7.2/) | 10.7.2 | tools | `oci://ghcr.io/argoproj/argo-helm/argo-cd` |
 | [Dynatrace Operator](applications/dynatrace-operator/1.6.1/) | 1.6.1 | observability | `oci://public.ecr.aws/dynatrace/dynatrace-operator` |
 | [ECK Operator](applications/eck-operator/3.5.0/) | 3.5.0 | logging | `https://helm.elastic.co` |
-| [GitLab](applications/gitlab/9.0.2/) | 9.0.2 | general | `https://charts.gitlab.io` |
+| [GitLab](applications/gitlab/9.11.16/) | 9.11.16 | general | `oci://registry.gitlab.com/charts/charts.gitlab.io/release/gitlab` |
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
@@ -34,6 +34,9 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [VictoriaMetrics Single](applications/vmsingle/0.1.4/) | 0.1.4 | observability | _(plain manifests)_ |
 
 All applications are workspace-scoped and require a NKP Ultimate licence (as you can't add custom catalogs on anything less than NKP Ultimate).
+
+> [!NOTE]
+> The version number reported is typically the version of the upstream Helm chart, not the buncled application.
 
 A few notes on the less obvious/non-upstream project entries:
 
