@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    # Single instance, no replicas
+    replica:
+      enabled: false
+
+    service:
+      type: ClusterIP
+      port: 6379
+
+    # Persist data using the default StorageClass
+    dataStorage:
+      enabled: true
+      requestedSize: 8Gi
+      keepPvc: false
+
+    # RWO volume can't be shared between old and new pods during a rolling update
+    deploymentStrategy: Recreate
+
+    # Enable AOF so writes survive a restart, not just periodic RDB snapshots
+    valkeyConfig: |
+      appendonly yes
+
+    auth:
+      enabled: true
+      aclUsers:
+        # Needs customizing
+        default:
+          permissions: "~* &* +@all"
+          password: "changeme"

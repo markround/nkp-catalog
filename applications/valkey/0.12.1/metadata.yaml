@@ -1,0 +1,51 @@
+schema: catalog.nkp.nutanix.com/v1/application-metadata
+allowMultipleInstances: false
+category:
+- general
+description: Valkey in-memory datastore
+displayName: Valkey
+licensing:
+- Ultimate
+scope:
+- workspace
+overview: |-
+  ## Overview
+  Valkey is an open source, high-performance in-memory key/value datastore. It is a fork of Redis and is compatible with Redis clients and tooling.
+
+  This application deploys a single, non-HA Valkey instance for demo purposes:
+
+  * One Valkey pod (no replicas), with data persisted to an 8Gi volume from the default StorageClass
+  * Exposed inside the cluster only, via a `ClusterIP` service at `valkey.<WORKSPACE NAMESPACE>.svc.cluster.local:6379`
+  * ACL authentication enabled for the `default` user
+
+  ## Default username and password
+  The default username is `default` and the default password is `changeme`. **You should override this** by setting the following value:
+
+  ```
+  auth:
+    aclUsers:
+      default:
+        permissions: "~* &* +@all"
+        password: <YOUR PASSWORD>
+  ```
+
+  Retrieve the current password with the following:
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> get secret valkey-auth -o go-template='{{index .data "default-password" | base64decode}}'
+  ```
+
+  ## Connecting
+  To test connectivity from your workstation, port-forward the service and connect with `valkey-cli` (or `redis-cli`):
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> port-forward svc/valkey 6379:6379
+  valkey-cli -h 127.0.0.1 -p 6379 --user default --pass <PASSWORD> ping
+  ```
+
+  Source code and documentation can be found here:
+
+  * <https://valkey.io/>
+  * <https://github.com/valkey-io/valkey-helm>
+icon: PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJtMTI2LjEgNDMxLjItOTEuNy01Ny40VjEyOC42TDI1OC43IDBsMjE4LjkgMTI4Ljh2MjU4TDI1NS4yIDUxMiAxNzggNDYzLjdWMzQ2LjJMMTM2LjIgMzIwVjE4N2wxMjEuMi02OS41IDExOC40IDY5Ljd2MTM5LjRMMjgyIDM3OS40di01Ni4xYzI4LjEtMTAuOCA0OC4zLTM4LjYgNDguMy03MS41IDAtNDIuMy0zMy41LTc2LjMtNzQuMy03Ni4zcy03NC4zIDM0LTc0LjMgNzYuM2MwIDMyLjggMjAuMiA2MC42IDQ4LjMgNzEuNXYxMDYuM2wyNi44IDE2LjggMTY0LjQtOTIuNlYxNjEuMUwyNTguMyA2NS4zbC0xNjcuNSA5NnYxODEuM2wzNS4zIDIyLjF6TTI1NiAyMTYuN2MxOC41IDAgMzMuMSAxNS45IDMzLjEgMzUuMSAwIDE5LjEtMTQuNiAzNS4xLTMzLjEgMzUuMXMtMzMuMS0xNS45LTMzLjEtMzUuMSAxNC42LTM1LjEgMzMuMS0zNS4xIiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7ZmlsbDojMTIzNjc4Ii8+PC9zdmc+
+---

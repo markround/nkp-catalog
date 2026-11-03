@@ -30,6 +30,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
+| [Valkey](applications/valkey/0.12.1/) | 0.12.1 | general | `oci://ghcr.io/valkey-io/valkey-helm/valkey` |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
 | [VictoriaMetrics Single](applications/vmsingle/0.1.4/) | 0.1.4 | observability | _(plain manifests)_ |
 
