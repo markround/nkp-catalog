@@ -2,7 +2,7 @@
 schema: catalog.nkp.nutanix.com/v1/application-metadata
 allowMultipleInstances: false
 category:
-- logging
+- observability
 description: Single-node Elasticsearch cluster
 displayName: Elasticsearch
 licensing:

@@ -25,8 +25,8 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Arcadians](applications/arcadians/0.1.0/) | 0.1.0 | games | _(plain manifests)_ |
 | [Argo CD](applications/argo-cd/10.7.2/) | 10.7.2 | tools | `oci://ghcr.io/argoproj/argo-helm/argo-cd` |
 | [Dynatrace Operator](applications/dynatrace-operator/1.6.1/) | 1.6.1 | observability | `oci://public.ecr.aws/dynatrace/dynatrace-operator` |
-| [ECK Operator](applications/eck-operator/3.5.0/) | 3.5.0 | logging | `https://helm.elastic.co` |
-| [Elasticsearch](applications/elasticsearch/9.5.6/) | 9.5.6 | logging | _(plain manifests)_ |
+| [ECK Operator](applications/eck-operator/3.5.0/) | 3.5.0 | observability | `https://helm.elastic.co` |
+| [Elasticsearch](applications/elasticsearch/9.5.6/) | 9.5.6 | observability | _(plain manifests)_ |
 | [GitLab](applications/gitlab/9.11.16/) | 9.11.16 | general | `oci://registry.gitlab.com/charts/charts.gitlab.io/release/gitlab` |
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
