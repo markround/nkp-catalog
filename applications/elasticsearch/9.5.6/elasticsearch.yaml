@@ -1,0 +1,27 @@
+---
+# Reconciled by the eck-operator app, which this app depends on.
+# The operator creates a StatefulSet, Services (elasticsearch-es-http:9200, TLS)
+# and the elasticsearch-es-elastic-user Secret from this resource.
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch
+  namespace: ${workspaceNamespace}
+spec:
+  version: 9.5.6
+  nodeSets:
+  - name: default
+    count: 1
+    config:
+      # Avoids needing vm.max_map_count raised on the nodes, at some cost to performance
+      node.store.allow_mmap: false
+    volumeClaimTemplates:
+    - metadata:
+        # ECK requires this name for the data volume
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
