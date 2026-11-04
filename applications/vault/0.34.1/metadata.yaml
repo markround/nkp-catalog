@@ -1,0 +1,67 @@
+schema: catalog.nkp.nutanix.com/v1/application-metadata
+allowMultipleInstances: false
+category:
+- security
+description: HashiCorp Vault secrets management
+displayName: Vault
+licensing:
+- Ultimate
+scope:
+- workspace
+overview: |-
+  ## Overview
+  HashiCorp Vault secures, stores and tightly controls access to tokens, passwords, certificates, encryption keys and other secrets.
+
+  This application deploys a single, non-HA Vault server for demo purposes:
+
+  * One Vault pod (`vault-0`) using file storage on a 10Gi persistent volume from the default StorageClass
+  * The UI and API exposed via an Ingress on the NKP Traefik ingress controller, which terminates TLS
+  * The Vault Agent Injector, so pods can have secrets injected using annotations
+
+  Inside the cluster, Vault is reachable over plain HTTP at `http://vault.<WORKSPACE NAMESPACE>.svc:8200`.
+
+  ## Required values
+  ### Hostname
+
+  Vault cannot be served under a sub-path, so it needs its own FQDN that resolves in DNS (or local hosts files etc.) to the external IP of the NKP Traefik ingress controller. Find that IP with:
+
+  ```
+  kubectl get svc -A | grep kommander-traefik
+  ```
+
+  You **must** set the following value specific to your environment:
+
+  ```
+  server:
+    ingress:
+      hosts:
+        - host: <YOUR HOSTNAME>
+          paths: []
+  ```
+
+  The default is `vault.example.com`. Once deployed, browse to `https://<YOUR HOSTNAME>`.
+
+  ## Post-install: initialise and unseal
+  Vault starts **uninitialised and sealed**, and the `vault-0` pod will show as not ready (`0/1`) until it is unsealed. After installing, initialise it with a single unseal key:
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> exec vault-0 -- vault operator init -key-shares=1 -key-threshold=1
+  ```
+
+  This prints `Unseal Key 1` and the `Initial Root Token`. **Save both** – they are not stored anywhere and cannot be recovered. Then unseal Vault with:
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> exec vault-0 -- vault operator unseal <UNSEAL KEY>
+  ```
+
+  Log in to the UI or CLI with the root token. Alternatively, both steps can be carried out in the web UI.
+
+  **Vault seals itself whenever the pod restarts** (including upgrades and node maintenance), so the unseal command above must be run again after every restart.
+
+  Source code and documentation can be found here:
+
+  * <https://developer.hashicorp.com/vault/docs>
+  * <https://developer.hashicorp.com/vault/docs/platform/k8s/helm>
+  * <https://github.com/hashicorp/vault-helm>
+icon: PHN2ZyB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCAxNiAxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsPSJub25lIj48cGF0aCBmaWxsPSIjMDAwMDAwIiBkPSJNMCAwbDcuOTcxIDE1LjUxNkwxNiAwSDB6bTYuNzMyIDYuMTZoLTEuMjdWNC44OWgxLjI3djEuMjd6bTAtMS45MDZoLTEuMjdWMi45ODVoMS4yN3YxLjI2OXptMS45MDQgMy44MWgtMS4yN3YtMS4yN2gxLjI3djEuMjd6bTAtMS45MDVoLTEuMjdWNC44OWgxLjI3djEuMjd6bTAtMS45MDVoLTEuMjdWMi45ODVoMS4yN3YxLjI2OXptMS44OTQgMS45MDVIOS4yNlY0Ljg5aDEuMjd2MS4yN3pNOS4yNiA0LjI1NFYyLjk4NWgxLjI3djEuMjY5SDkuMjZ6Ii8+PC9zdmc+Cg==
+---
