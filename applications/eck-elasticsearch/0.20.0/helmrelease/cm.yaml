@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    version: 9.5.6
+
+    # Passed through as-is to the Elasticsearch resource's spec.nodeSets. Helm
+    # replaces lists rather than merging them, so any override must supply the
+    # complete list, including the config and volumeClaimTemplates below.
+    nodeSets:
+    - name: default
+      count: 1
+      config:
+        # Avoids needing vm.max_map_count raised on the nodes, at some cost to performance
+        node.store.allow_mmap: false
+      volumeClaimTemplates:
+      - metadata:
+          # ECK requires this name for the data volume
+          name: elasticsearch-data
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi

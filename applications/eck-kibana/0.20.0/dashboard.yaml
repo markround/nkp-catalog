@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mdr-eck-kibana-dashboard-info
+  namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/application: eck-kibana
+data:
+  dashboardLink: "/mdr/kibana/"
+  docsLink: "https://github.com/markround/nkp-catalog"
+  name: Kibana
+  version: 0.20.0

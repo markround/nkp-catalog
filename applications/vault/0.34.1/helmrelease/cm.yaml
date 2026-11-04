@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    server:
+      # Single node using file storage on a PVC from the default StorageClass
+      standalone:
+        enabled: true
+      ha:
+        enabled: false
+      dataStorage:
+        enabled: true
+        size: 10Gi
+
+      # Expose the UI and API via the NKP Traefik ingress, which terminates TLS.
+      # Vault can't be served under a sub-path, so this needs its own hostname.
+      # The target service also publishes sealed pods, so Vault can be
+      # initialised and unsealed through it.
+      ingress:
+        enabled: true
+        ingressClassName: kommander-traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.tls: "true"
+        hosts:
+          # Needs customizing
+          - host: vault.example.com
+            paths: []

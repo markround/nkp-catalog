@@ -20,6 +20,7 @@ additional_crds:
   # Elasticsearch CRD for the operator version in eck-operator 3.5.0. The combined
   # crds.yaml bundle can't be used as its descriptions contain ${VAR} examples.
   - https://raw.githubusercontent.com/elastic/cloud-on-k8s/v3.5.0/config/crds/v1/resources/elasticsearch.k8s.elastic.co_elasticsearches.yaml
+  - https://raw.githubusercontent.com/elastic/cloud-on-k8s/v3.5.0/config/crds/v1/resources/kibana.k8s.elastic.co_kibanas.yaml
 
 # set values for substitution variables (e.g. ${releaseNamespace}) in the resources
 substitution_vars:

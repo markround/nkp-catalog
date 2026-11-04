@@ -25,13 +25,16 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Arcadians](applications/arcadians/0.1.0/) | 0.1.0 | games | _(plain manifests)_ |
 | [Argo CD](applications/argo-cd/10.7.2/) | 10.7.2 | tools | `oci://ghcr.io/argoproj/argo-helm/argo-cd` |
 | [Dynatrace Operator](applications/dynatrace-operator/1.6.1/) | 1.6.1 | observability | `oci://public.ecr.aws/dynatrace/dynatrace-operator` |
+| [ECK Elasticsearch](applications/eck-elasticsearch/0.20.0/) | 0.20.0 | observability | `https://helm.elastic.co` |
+| [ECK Kibana](applications/eck-kibana/0.20.0/) | 0.20.0 | observability | `https://helm.elastic.co` |
 | [ECK Operator](applications/eck-operator/3.5.0/) | 3.5.0 | observability | `https://helm.elastic.co` |
-| [Elasticsearch](applications/elasticsearch/9.5.6/) | 9.5.6 | observability | _(plain manifests)_ |
 | [GitLab](applications/gitlab/9.11.16/) | 9.11.16 | general | `oci://registry.gitlab.com/charts/charts.gitlab.io/release/gitlab` |
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
+| [Open WebUI](applications/open-webui/18.0.0/) | 18.0.0 | general | `oci://ghcr.io/open-webui/helm-charts/open-webui` |
 | [Valkey](applications/valkey/0.12.1/) | 0.12.1 | general | `oci://ghcr.io/valkey-io/valkey-helm/valkey` |
+| [Vault](applications/vault/0.34.1/) | 0.34.1 | security | `https://helm.releases.hashicorp.com` |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
 | [VictoriaMetrics Single](applications/vmsingle/0.1.4/) | 0.1.4 | observability | _(plain manifests)_ |
 
@@ -44,7 +47,8 @@ A few notes on the less obvious/non-upstream project entries:
 
 * **ACME Issusers** - my own [Helm chart](https://github.com/markround/acme-issuers) to make deploying ACME-based ClusterIssuers across clusters simple.
 * **Arcadians** - a retro Galaxian-style game ([original](https://github.com/jdtate101/Arcadians) by James Tate, [my fork](https://github.com/markround/Arcadians)) packaged as a stateful demo app: a HTML5 frontend, a FastAPI backend and a PostgreSQL database for persistent high scores. Used to demo backup/restore and migration of stateful workloads. Always deploys into the `retro-game` namespace.
-* **Elasticsearch** - a single-node Elasticsearch cluster (an `Elasticsearch` resource, based on the ECK quickstart) deployed into the workspace namespace. It declares a dependency on `eck-operator`.
+* **ECK Elasticsearch** - a single-node demo Elasticsearch cluster (based on the ECK quickstart) deployed with Elastic's `eck-elasticsearch` Helm chart, so node count, resources, storage etc. can be customised through Helm values. It declares a dependency on `eck-operator`.
+* **ECK Kibana** - a single Kibana instance deployed with Elastic's `eck-kibana` Helm chart, connected to the ECK Elasticsearch cluster. It is served under `/mdr/kibana` through the NKP Traefik ingress, with a link on the NKP dashboard. It declares dependencies on `eck-operator` and `eck-elasticsearch`.
 * **MDR Common** - a demo app to show how you could deploy shared manifests you want available on all clusters (currently just a demo CA certificate secret).
 * **MDR Demo** - a trivial Nginx app used to show ingress and dashboard capabilities. It declares a dependency on `mdr-common`.
 * **VictoriaMetrics Single** - a single-node VictoriaMetrics instance (a `VMSingle` resource) deployed into the workspace namespace. It declares a dependency on `victoria-metrics-operator`.

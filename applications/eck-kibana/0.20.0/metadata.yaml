@@ -1,0 +1,47 @@
+schema: catalog.nkp.nutanix.com/v1/application-metadata
+allowMultipleInstances: false
+category:
+- observability
+description: Customisable Kibana via the eck-kibana Helm chart
+displayName: ECK Kibana
+licensing:
+- Ultimate
+scope:
+- workspace
+overview: |-
+  ## Overview
+  Deploys Kibana into the workspace namespace using Elastic's `eck-kibana` Helm chart, which creates a `Kibana` custom resource managed by the ECK Operator. It connects automatically to the `eck-elasticsearch` cluster deployed by the ECK Elasticsearch application.
+
+  The defaults deploy a single Kibana 9.5.6 instance for demo purposes, called `eck-kibana`. It is served over plain HTTP under the `/mdr/kibana` path prefix, and exposed through the NKP Traefik ingress (which terminates TLS) at `https://<NKP HOSTNAME>/mdr/kibana/`. A link is also added to the NKP dashboard.
+
+  Inside the cluster it is reachable at `http://eck-kibana-kb-http.<WORKSPACE NAMESPACE>.svc:5601/mdr/kibana`.
+
+  This application requires the ECK Operator and ECK Elasticsearch applications to be enabled in the same workspace.
+  ## Customising
+  Most fields of the [Kibana resource](https://www.elastic.co/docs/deploy-manage/deploy/cloud-on-k8s/kibana-configuration) can be set through Helm values, including `count`, `config`, `podTemplate` and `http`. The Kibana `version` must not be newer than the Elasticsearch version.
+
+  The ingress included in this application routes `/mdr/kibana` to Kibana, so do not change `config.server.basePath` unless you also provide your own ingress.
+
+  ## Credentials
+  Log in as the built-in `elastic` superuser created by the ECK Elasticsearch application. Retrieve its password with the following:
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> get secret eck-elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'
+  ```
+
+  ## Connecting
+  To access Kibana from your workstation without the ingress, port-forward the service and browse to <http://localhost:5601/mdr/kibana>:
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> port-forward svc/eck-kibana-kb-http 5601:5601
+  ```
+
+  Source code and documentation can be found here:
+
+  * <https://www.elastic.co/docs/deploy-manage/deploy/cloud-on-k8s/managing-deployments-using-helm-chart>
+  * <https://github.com/elastic/cloud-on-k8s/tree/main/deploy/eck-stack/charts/eck-kibana>
+dependencies:
+- eck-operator
+- eck-elasticsearch
+icon: PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIiB2aWV3Qm94PSIwIDAgMjU2IDM0MS4wMSI+PHBhdGggZmlsbD0iIzAwOUI5MCIgZD0iTTAgMzA2LjkzdjM0LjAxMmgxNS45ODZMMTU2LjMyIDE3Mi43MThhMjY2IDI2NiAwIDAgMC0zMC4zNC0xNy4wMDZ6Ii8+PHBhdGggZmlsbD0iIzQwQkVCMCIgZD0iTTE1Ni4zMjQgMTcyLjcxOCAxNS45MjIgMzQxLjAxaDIzOS42NWMwLTY4LjU2OS0zOC45MS0xMjkuNTE5LTk5LjI0OC0xNjguMjkyIi8+PHBhdGggZmlsbD0iI0VGNTA5OCIgZD0iTTAgMHYzMDcuNDQ1TDI1NiAweiIvPjxwYXRoIGZpbGw9IiMzNTM1MzUiIGQ9Im0uMDY4IDMwNy4zNCAxMjYuMTc1LTE1MS40OTVDODYuNjkzIDEzNy4zNzIgNDMuNjUxIDEyNy44MDUgMCAxMjguMDAzeiIvPjwvc3ZnPg==
+---
