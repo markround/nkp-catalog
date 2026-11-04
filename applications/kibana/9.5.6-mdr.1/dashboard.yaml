@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mdr-kibana-dashboard-info
+  namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/application: kibana
+data:
+  dashboardLink: "/mdr/kibana/"
+  docsLink: "https://github.com/markround/nkp-catalog"
+  name: VictoriaMetrics Single
+  version: 9.5.6-mdr.1

@@ -29,7 +29,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Elasticsearch](applications/elasticsearch/9.5.6/) | 9.5.6 | observability | _(plain manifests)_ |
 | [GitLab](applications/gitlab/9.11.16/) | 9.11.16 | general | `oci://registry.gitlab.com/charts/charts.gitlab.io/release/gitlab` |
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
-| [Kibana](applications/kibana/9.5.6/) | 9.5.6 | observability | _(plain manifests)_ |
+| [Kibana](applications/kibana/9.5.6-mdr.1/) | 9.5.6-mdr.1 | observability | _(plain manifests)_ |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
 | [Valkey](applications/valkey/0.12.1/) | 0.12.1 | general | `oci://ghcr.io/valkey-io/valkey-helm/valkey` |
