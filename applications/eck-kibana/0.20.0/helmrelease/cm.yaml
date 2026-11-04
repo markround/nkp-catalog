@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    # Must not be newer than the Elasticsearch version
+    version: 9.5.6
+    count: 1
+
+    # The cluster deployed by the eck-elasticsearch app
+    elasticsearchRef:
+      name: eck-elasticsearch
+
+    config:
+      # Serve everything under this prefix so it can sit behind the path-based
+      # ingress in this app. ECK adjusts the readiness probe to match.
+      server.basePath: /mdr/kibana
+      server.rewriteBasePath: true
+
+    http:
+      service:
+        spec:
+          type: ClusterIP
+      # Disable self-signed cert and therefore TLS as will be handled by Ingress
+      tls:
+        selfSignedCertificate:
+          disabled: true
