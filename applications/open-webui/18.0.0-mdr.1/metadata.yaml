@@ -19,11 +19,25 @@ overview: |-
   * [Pipelines](https://github.com/open-webui/pipelines) for extending Open WebUI
   * A small Redis instance for websocket support
 
-  The Open WebUI service is exposed as a `LoadBalancer` on port 80. Find its external IP with the following:
+  Open WebUI is exposed via an Ingress on the NKP Traefik ingress controller, which terminates TLS.
+
+  ## Required values
+  ### Hostname
+
+  Open WebUI needs its own FQDN that resolves in DNS (or local hosts files etc.) to the external IP of the NKP Traefik ingress controller. Find that IP with:
 
   ```
-  kubectl -n <WORKSPACE NAMESPACE> get svc open-webui
+  kubectl get svc -A | grep kommander-traefik
   ```
+
+  You **must** set the following value specific to your environment:
+
+  ```
+  ingress:
+    host: <YOUR HOSTNAME>
+  ```
+
+  The default is `chat.example.com`. Once deployed, browse to `https://<YOUR HOSTNAME>`.
 
   ## Initial admin account
   There is no default username or password. The **first account created** through the web UI's sign-up page becomes the administrator, so create it as soon as the service is reachable.

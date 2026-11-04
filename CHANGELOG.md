@@ -11,6 +11,8 @@
   - **Now installs into the `dynatrace` namespace** instead of the workspace namespace, matching the upstream chart defaults and Dynatrace documentation. Create `DynaKube` resources there.
   - `DynaKube` API versions `v1beta1`–`v1beta4` are no longer served; use `v1beta5` or `v1beta6`.
   - The overview now links to the Dynatrace Kubernetes quickstart for next steps (creating a `DynaKube`).
+- [Open WebUI](applications/open-webui/18.0.0-mdr.1/) `18.0.0` → `18.0.0-mdr.1`
+  - **Now exposed through the NKP Traefik ingress instead of a `LoadBalancer` service.** A hostname must be set with the `ingress.host` Helm value (default `chat.example.com`).
 
 > [!NOTE]
 > This file was reconstructed retrospectively from git tags, so entries up to and including `0.2.0` list only which applications were added or updated.
@@ -21,7 +23,7 @@
 
 - [ECK Elasticsearch](applications/eck-elasticsearch/0.20.0/) `0.20.0`
 - [ECK Kibana](applications/eck-kibana/0.20.0/) `0.20.0`
-- [Open WebUI](applications/open-webui/18.0.0/) `18.0.0`
+- Open WebUI `18.0.0`
 - [Valkey](applications/valkey/0.12.1/) `0.12.1`
 - [Vault](applications/vault/0.34.1/) `0.34.1`
 
@@ -74,8 +76,8 @@
 
 ### Added
 
-- [Argo CD](applications/argo-cd/10.7.2/) `10.7.2`
-- [Dynatrace Operator](applications/dynatrace-operator/1.6.1/) `1.6.1`
+- Argo CD `10.7.2`
+- Dynatrace Operator `1.6.1`
 - [ECK Operator](applications/eck-operator/3.5.0/) `3.5.0`
 - GitLab `9.0.2`
 

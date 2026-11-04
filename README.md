@@ -32,7 +32,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
-| [Open WebUI](applications/open-webui/18.0.0/) | 18.0.0 | general | `oci://ghcr.io/open-webui/helm-charts/open-webui` |
+| [Open WebUI](applications/open-webui/18.0.0-mdr.1/) | 18.0.0-mdr.1 | inferencing-and-serving | `oci://ghcr.io/open-webui/helm-charts/open-webui` |
 | [Valkey](applications/valkey/0.12.1/) | 0.12.1 | general | `oci://ghcr.io/valkey-io/valkey-helm/valkey` |
 | [Vault](applications/vault/0.34.1/) | 0.34.1 | security | `https://helm.releases.hashicorp.com` |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
