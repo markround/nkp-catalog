@@ -481,7 +481,7 @@ data:
             <div><dt>Catalog entry</dt><dd>MDR Demo</dd></div>
             <div><dt>Scope</dt><dd>workspace</dd></div>
             <div><dt>Namespace</dt><dd>${workspaceNamespace}</dd></div>
-            <div><dt>Deployment</dt><dd>mdr-demo · 5 replicas</dd></div>
+            <div><dt>Deployment</dt><dd>mdr-demo · 3 replicas</dd></div>
             <div><dt>Image</dt><dd>nginx:1.31-alpine</dd></div>
             <div><dt>Service</dt><dd>mdr-demo · ClusterIP :80</dd></div>
             <div><dt>Ingress</dt><dd>kommander-traefik · /mdr-demo</dd></div>
