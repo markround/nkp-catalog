@@ -26,6 +26,9 @@ spec:
   interval: 15s
   releaseName: open-webui
   targetNamespace: ${releaseNamespace}
+  # The default 5m isn't long enough for the first install to pull the large
+  # Open WebUI, Ollama and Pipelines images and become ready
+  timeout: 15m0s
   upgrade:
     remediation:
       retries: 30
