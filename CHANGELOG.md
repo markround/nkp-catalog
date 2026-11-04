@@ -7,6 +7,10 @@
 - [Argo CD](applications/argo-cd/10.12.1/) `10.7.2` → `10.12.1` (Argo CD `v3.6.1`)
   - **The UI has moved from `/argo-cd` to `/mdr/argo-cd`.** The NKP dashboard link is updated automatically; update any bookmarks or CLI `--grpc-web-root-path` settings.
   - The dashboard entry now reports the correct chart version.
+- [Dynatrace Operator](applications/dynatrace-operator/1.11.1/) `1.6.1` → `1.11.1`
+  - **Now installs into the `dynatrace` namespace** instead of the workspace namespace, matching the upstream chart defaults and Dynatrace documentation. Create `DynaKube` resources there.
+  - `DynaKube` API versions `v1beta1`–`v1beta4` are no longer served; use `v1beta5` or `v1beta6`.
+  - The overview now links to the Dynatrace Kubernetes quickstart for next steps (creating a `DynaKube`).
 
 > [!NOTE]
 > This file was reconstructed retrospectively from git tags, so entries up to and including `0.2.0` list only which applications were added or updated.

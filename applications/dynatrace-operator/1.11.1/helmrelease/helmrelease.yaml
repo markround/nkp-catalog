@@ -5,8 +5,12 @@ metadata:
   namespace: ${releaseNamespace}
 spec:
   interval: 6h0m0s
+  # The provenance file is published as the first layer, so select the chart explicitly
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
   ref:
-    tag: 1.6.1
+    tag: 1.11.1
   url: "oci://public.ecr.aws/dynatrace/dynatrace-operator"
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -26,7 +30,8 @@ spec:
       retries: 30
   interval: 15s
   releaseName: dynatrace-operator
-  targetNamespace: ${releaseNamespace}
+  # Upstream chart defaults and Dynatrace documentation assume the dynatrace namespace
+  targetNamespace: dynatrace
   upgrade:
     crds: CreateReplace
     remediation:
