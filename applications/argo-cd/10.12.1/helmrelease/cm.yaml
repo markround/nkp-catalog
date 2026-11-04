@@ -16,8 +16,8 @@ data:
         # So we can use Traefik TLS termination
         server.insecure: true
         # For ingress on a subpath
-        server.rootpath: /argo-cd
-        server.basehref: /argo-cd 
+        server.rootpath: /mdr/argo-cd
+        server.basehref: /mdr/argo-cd 
       # So applications have a health check and can therefore be included in sync waves
       # See https://argo-cd.readthedocs.io/en/stable/operator-manual/health/
       cm:
@@ -44,7 +44,7 @@ data:
         ingressClassName: kommander-traefik
         annotations:
           traefik.ingress.kubernetes.io/router.tls: "true"
-        path: /argo-cd
+        path: /mdr/argo-cd
 
     # Metrics support
     controller:

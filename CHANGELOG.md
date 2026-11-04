@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 
-_Nothing yet._
+### Updated
+
+- [Argo CD](applications/argo-cd/10.12.1/) `10.7.2` → `10.12.1` (Argo CD `v3.6.1`)
+  - **The UI has moved from `/argo-cd` to `/mdr/argo-cd`.** The NKP dashboard link is updated automatically; update any bookmarks or CLI `--grpc-web-root-path` settings.
+  - The dashboard entry now reports the correct chart version.
 
 > [!NOTE]
 > This file was reconstructed retrospectively from git tags, so entries up to and including `0.2.0` list only which applications were added or updated.
