@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- [Whereabouts](applications/whereabouts/0.9.4/) `0.9.4` - IPAM CNI plugin, installed into `kube-system`.
+
 ### Updated
 
 - [Argo CD](applications/argo-cd/10.12.1/) `10.7.2` → `10.12.1` (Argo CD `v3.6.1`)

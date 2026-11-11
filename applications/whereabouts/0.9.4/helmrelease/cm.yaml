@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    # Name resources "whereabouts" rather than "whereabouts-whereabouts-chart",
+    # matching the upstream plain manifests
+    fullnameOverride: whereabouts

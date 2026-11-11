@@ -37,6 +37,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Vault](applications/vault/0.34.1/) | 0.34.1 | security | `https://helm.releases.hashicorp.com` |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
 | [VictoriaMetrics Single](applications/vmsingle/0.1.4/) | 0.1.4 | observability | _(plain manifests)_ |
+| [Whereabouts](applications/whereabouts/0.9.4/) | 0.9.4 | networking | `oci://ghcr.io/k8snetworkplumbingwg/whereabouts-chart` |
 
 All applications are workspace-scoped and require a NKP Ultimate licence (as you can't add custom catalogs on anything less than NKP Ultimate).
 
