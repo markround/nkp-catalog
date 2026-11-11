@@ -21,8 +21,6 @@
 - [Open WebUI](applications/open-webui/18.0.0-mdr.1/) `18.0.0` -> `18.0.0-mdr.1`
   - **Now exposed through the NKP Traefik ingress instead of a `LoadBalancer` service.** A hostname must be set with the `ingress.host` Helm value (default `chat.example.com`).
 
-> [!NOTE]
-> This file was reconstructed retrospectively from git tags, so entries up to and including `0.2.0` list only which applications were added or updated.
 
 ## [0.2.0] - 2026-11-04
 
