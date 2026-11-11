@@ -10,4 +10,4 @@ data:
   dashboardLink: "/mdr/argo-cd/"
   docsLink: "https://argo-cd.readthedocs.io/en/stable/"
   name: Argo CD
-  version: 10.12.1
+  version: 10.18.0

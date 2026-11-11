@@ -1,7 +1,10 @@
 # Changelog
 
 ## [Unreleased]
-- Nothing yet
+
+### Updated
+
+- [Argo CD](applications/argo-cd/10.18.0/) `10.12.1` -> `10.18.0` (Argo CD `v3.6.1`, unchanged)
 
 ## [0.3.0] - 2026-11-11
 
@@ -11,7 +14,7 @@
 
 ### Updated
 
-- [Argo CD](applications/argo-cd/10.12.1/) `10.7.2` -> `10.12.1` (Argo CD `v3.6.1`)
+- Argo CD `10.7.2` -> `10.12.1` (Argo CD `v3.6.1`)
   - **The UI has moved from `/argo-cd` to `/mdr/argo-cd`.** The NKP dashboard link is updated automatically, update any bookmarks or CLI `--grpc-web-root-path` settings.
   - The dashboard entry now reports the correct chart version.
 - [Dynatrace Operator](applications/dynatrace-operator/1.11.1/) `1.6.1` -> `1.11.1`
