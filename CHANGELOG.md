@@ -5,6 +5,7 @@
 ### Updated
 
 - [Argo CD](applications/argo-cd/10.18.0/) `10.12.1` -> `10.18.0` (Argo CD `v3.6.1`, unchanged)
+- [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.2/) `0.68.1` -> `0.68.2` (operator `v0.75.0` -> `v0.75.2`)
 
 ## [0.3.0] - 2026-11-11
 
@@ -43,7 +44,7 @@
 
 ### Added
 
-- [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) `0.68.1`
+- VictoriaMetrics Operator `0.68.1`
 - [VictoriaMetrics Single](applications/vmsingle/0.1.4/) `0.1.4`
 
 ### Updated

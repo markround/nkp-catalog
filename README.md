@@ -37,7 +37,7 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | [Open WebUI](applications/open-webui/18.0.0-mdr.1/) | 18.0.0-mdr.1 | inferencing-and-serving | `oci://ghcr.io/open-webui/helm-charts/open-webui` |
 | [Valkey](applications/valkey/0.12.1/) | 0.12.1 | general | `oci://ghcr.io/valkey-io/valkey-helm/valkey` |
 | [Vault](applications/vault/0.34.1/) | 0.34.1 | security | `https://helm.releases.hashicorp.com` |
-| [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.1/) | 0.68.1 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
+| [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.2/) | 0.68.2 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |
 | [VictoriaMetrics Single](applications/vmsingle/0.1.4/) | 0.1.4 | observability | _(plain manifests)_ |
 | [Whereabouts](applications/whereabouts/0.9.4/) | 0.9.4 | networking | `oci://ghcr.io/k8snetworkplumbingwg/whereabouts-chart` |
 
