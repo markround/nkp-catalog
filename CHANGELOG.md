@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- [Descheduler](applications/descheduler/0.37.0/) `0.37.0` - evicts pods so they can be rescheduled onto better nodes, installed into `kube-system`.
+
 ### Updated
 
 - [Argo CD](applications/argo-cd/10.18.0/) `10.12.1` -> `10.18.0` (Argo CD `v3.6.1`, unchanged)

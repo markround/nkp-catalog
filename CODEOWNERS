@@ -5,6 +5,7 @@
 /applications/acme-issuers @markround
 /applications/arcadians @markround
 /applications/argo-cd @markround
+/applications/descheduler @markround
 /applications/dynatrace-operator @markround
 /applications/eck-elasticsearch @markround
 /applications/eck-kibana @markround

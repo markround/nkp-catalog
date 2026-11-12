@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    # Upstream chart defaults are used: a CronJob running every 2 minutes with
+    # the default rebalancing policy. See the application overview for how to
+    # customise this.
