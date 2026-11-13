@@ -9,6 +9,8 @@
 ### Updated
 
 - [Argo CD](applications/argo-cd/10.18.0/) `10.12.1` -> `10.18.0` (Argo CD `v3.6.1`, unchanged)
+- [Dynatrace Operator](applications/dynatrace-operator/1.11.1-mdr.1/) `1.11.1` -> `1.11.1-mdr.1`
+  - The chart is now installed from Dynatrace's classic Helm repository instead of the OCI registry on ECR Public, which frequently rate limits anonymous pulls. The chart itself is unchanged.
 - [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.2/) `0.68.1` -> `0.68.2` (operator `v0.75.0` -> `v0.75.2`)
 
 ## [0.3.0] - 2026-11-11
@@ -22,7 +24,7 @@
 - Argo CD `10.7.2` -> `10.12.1` (Argo CD `v3.6.1`)
   - **The UI has moved from `/argo-cd` to `/mdr/argo-cd`.** The NKP dashboard link is updated automatically, update any bookmarks or CLI `--grpc-web-root-path` settings.
   - The dashboard entry now reports the correct chart version.
-- [Dynatrace Operator](applications/dynatrace-operator/1.11.1/) `1.6.1` -> `1.11.1`
+- Dynatrace Operator `1.6.1` -> `1.11.1`
   - **Now installs into the `dynatrace` namespace** instead of the workspace namespace, matching the upstream chart defaults and Dynatrace documentation. Create `DynaKube` resources there.
   - `DynaKube` API versions `v1beta1`–`v1beta4` are no longer served; use `v1beta5` or `v1beta6`.
   - The overview now links to the Dynatrace Kubernetes quickstart for next steps (creating a `DynaKube`).
