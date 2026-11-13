@@ -7,23 +7,77 @@ on:
     tags:
       - '**'
 
+# No token permissions by default, each job asks for only what it needs.
+permissions: {}
+
 env:
   DISTRIBUTOR_IMAGE: mesosphere/nkp-distributor-linux:v2.19.0
   CATALOG_REGISTRY: ghcr.io/markround/nkp-catalog
+  GITLEAKS_IMAGE: ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
 
+# Actions are pinned to commit SHAs, with the matching release in a comment.
 jobs:
-  validate-catalog:
+  # Static analysis of the workflows themselves (template injection, token
+  # permissions, unpinned actions etc.). Findings fail the job and are shown
+  # as annotations on the run.
+  zizmor:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Audit workflows with zizmor
+        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          # Pinned so new audits in a zizmor release can't break the build unannounced
+          version: 1.32.0
+          advanced-security: false
+          annotations: true
+
+  # Scan the whole git history for committed credentials. Allowlisted false
+  # positives are in .gitleaks.toml.
+  gitleaks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Scan for secrets with gitleaks
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/repo" \
+            "$GITLEAKS_IMAGE" \
+            git --no-banner --redact --verbose \
+              --config /repo/.gitleaks.toml \
+              /repo
+
+  validate-catalog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Validate catalog repository
         run: |
           docker run --rm \
             --entrypoint /opt/nkp/nkp \
-            -v ${{ github.workspace }}:/workspace \
+            -v "$GITHUB_WORKSPACE:/workspace" \
             -w /workspace \
             "$DISTRIBUTOR_IMAGE" \
             validate catalog-repository
@@ -33,11 +87,19 @@ jobs:
   # a project name.
   create-catalog-bundle:
     runs-on: ubuntu-latest
-    needs: validate-catalog
-    
+    # Nothing is bundled or pushed unless validation and both scans pass
+    needs:
+      - validate-catalog
+      - zizmor
+      - gitleaks
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # github.ref_name is the tag name for tag pushes and the branch name
       # for branch pushes. Slashes are not valid in an OCI tag, so branches
@@ -49,13 +111,13 @@ jobs:
         run: |
           docker run --rm \
             --entrypoint /opt/nkp/nkp \
-            -v ${{ github.workspace }}:/catalog \
+            -v "$GITHUB_WORKSPACE:/catalog" \
             -w /catalog \
             "$DISTRIBUTOR_IMAGE" \
-            create catalog-bundle --output-file nkp-catalog.tar --collection-tag $TAG
+            create catalog-bundle --output-file nkp-catalog.tar --collection-tag "$TAG"
 
       - name: Upload catalog bundle artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: catalog-bundle
           path: nkp-catalog.tar
@@ -67,27 +129,34 @@ jobs:
     permissions:
       contents: read
       packages: write
-    
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Download catalog bundle artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: catalog-bundle
 
+      # Credentials are passed through the environment rather than expanded
+      # into the script, so they are never interpolated as shell code.
       - name: Push catalog bundle
+        env:
+          REGISTRY_USERNAME: ${{ github.actor }}
+          REGISTRY_PASSWORD: ${{ github.token }}
         run: |
           docker run --rm \
             --entrypoint /opt/nkp/nkp \
-            -v ${{ github.workspace }}:/catalog \
+            -v "$GITHUB_WORKSPACE:/catalog" \
             -w /catalog \
             "$DISTRIBUTOR_IMAGE" \
             push bundle --bundle nkp-catalog.tar \
               --to-registry "$CATALOG_REGISTRY" \
-              --to-registry-username ${{ github.actor }} \
-              --to-registry-password ${{ secrets.GITHUB_TOKEN }}
+              --to-registry-username "$REGISTRY_USERNAME" \
+              --to-registry-password "$REGISTRY_PASSWORD"
 
   # Only for tag pushes, and only once the bundle for that tag has been pushed,
   # so a release always points at a published catalog collection.
@@ -100,7 +169,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # Use the "## [<tag>]" section of CHANGELOG.md as the release notes.
       # Relative links to applications/... are rewritten to point at the

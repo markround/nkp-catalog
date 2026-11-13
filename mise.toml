@@ -1,0 +1,9 @@
+# Tools for running the pipeline's security scans locally. The pipeline does
+# not use this file: keep these versions in step with the ones pinned in
+# .github/workflows/catalog.yml.
+#
+#   zizmor .github/workflows/
+#   gitleaks git --redact -v .
+[tools]
+zizmor = "1.32.0"
+gitleaks = "8.30.1"

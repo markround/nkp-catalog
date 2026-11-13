@@ -1,0 +1,21 @@
+# gitleaks configuration, used by the gitleaks job in .github/workflows/catalog.yml.
+# All of gitleaks' default rules apply, with only the narrow exceptions below.
+
+[extend]
+useDefault = true
+
+# The MDR Common app ships a demo CA *certificate* (public, no private key) as
+# a Kubernetes Secret, which the generic kubernetes-secret-yaml rule flags.
+# Only that rule is skipped, and only for that file.
+[[allowlists]]
+description = "MDR Common demo CA certificate (public, no private key)"
+targetRules = ["kubernetes-secret-yaml"]
+paths = ['''^applications/mdr-common/[^/]+/ca-secret\.yaml$''']
+
+# Documentation examples in application overviews use angle-bracket
+# placeholders for credentials, e.g. curl -u "elastic:<PASSWORD>".
+[[allowlists]]
+description = "Placeholder credentials in documentation examples"
+targetRules = ["curl-auth-user"]
+regexTarget = "secret"
+regexes = ['''^["']?[^:"']*:<[A-Za-z0-9_ -]+>["']?$''']
