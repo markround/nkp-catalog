@@ -8,7 +8,7 @@ data:
   values.yaml: |
     ---
     global:
-      # Most override this
+      # Must be overridden with a hostname resolving to the NKP Traefik ingress
       domain: localhost
       
     configs:
@@ -21,6 +21,12 @@ data:
       # So applications have a health check and can therefore be included in sync waves
       # See https://argo-cd.readthedocs.io/en/stable/operator-manual/health/
       cm:
+        # The chart defaults these to https://<global.domain>, without the
+        # subpath. SSO callbacks (<url>/auth/callback, <url>/api/dex/callback)
+        # and status badge links are built from them, so they must include it.
+        # The chart renders both through tpl, so they follow global.domain.
+        url: "https://{{ .Values.global.domain }}/mdr/argo-cd"
+        statusbadge.url: "https://{{ .Values.global.domain }}/mdr/argo-cd/"
         resource.customizations.health.argoproj.io_Application: |
           hs = {}
           hs.status = "Progressing"

@@ -9,6 +9,8 @@
 ### Updated
 
 - [Argo CD](applications/argo-cd/10.18.0/) `10.12.1` -> `10.18.0` (Argo CD `v3.6.1`, unchanged)
+  - The overview now notes that `global.domain` must be set to a hostname resolving to the NKP Traefik ingress, as the ingress only matches that host.
+  - Argo CD's URL now includes the `/mdr/argo-cd` path, fixing SSO callbacks (Dex and OIDC) and status badge links, which previously pointed at the root of the host. The overview lists the callback URLs to register with an identity provider.
 - [Dynatrace Operator](applications/dynatrace-operator/1.11.1-mdr.1/) `1.11.1` -> `1.11.1-mdr.1`
   - The chart is now installed from Dynatrace's classic Helm repository instead of the OCI registry on ECR Public, which frequently rate limits anonymous pulls. The chart itself is unchanged.
 - [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.2/) `0.68.1` -> `0.68.2` (operator `v0.75.0` -> `v0.75.2`)
