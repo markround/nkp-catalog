@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ${releaseName}-config-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    # Expose via the NKP Traefik ingress, which terminates TLS
+    ingress:
+      enabled: true
+      class: kommander-traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.tls: "true"
+      # Needs customizing
+      host: chat.example.com
+
+    # The chart derives WEBUI_URL from the ingress as http://<ingress.host>
+    # unless ingress.tls is set, but TLS is terminated by Traefik here. Open
+    # WebUI uses it for OAuth/SSO redirects and generated links, so set it with
+    # the correct scheme. Values are rendered through tpl, so this follows
+    # ingress.host. Map style, so extra variables in user values are merged.
+    extraEnvVars:
+      WEBUI_URL: "https://{{ .Values.ingress.host }}"
+
+    # NKP dashboard link, created through the chart so it can follow
+    # ingress.host. The chart renders extraResources through tpl. A map is used
+    # rather than a list, so additional resources in user values are merged
+    # instead of replacing this.
+    extraResources:
+      nkp-dashboard-link:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: open-webui-dashboard-link
+          namespace: ${releaseNamespace}
+          labels:
+            kommander.d2iq.io/application: open-webui
+        data:
+          dashboardLink: "https://{{ .Values.ingress.host }}/"
+          docsLink: "https://docs.openwebui.com/"
+          name: Open WebUI
+          # Catalog application version, update on every version bump
+          version: "18.0.0-mdr.2"

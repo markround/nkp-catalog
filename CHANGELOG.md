@@ -8,11 +8,18 @@
 
 ### Updated
 
-- [Argo CD](applications/argo-cd/10.18.0/) `10.12.1` -> `10.18.0` (Argo CD `v3.6.1`, unchanged)
+- [Argo CD](applications/argo-cd/10.18.0-mdr.1/) `10.12.1` -> `10.18.0-mdr.1` (chart `10.18.0`, Argo CD `v3.6.1`, unchanged)
   - The overview now notes that `global.domain` must be set to a hostname resolving to the NKP Traefik ingress, as the ingress only matches that host.
   - Argo CD's URL now includes the `/mdr/argo-cd` path, fixing SSO callbacks (Dex and OIDC) and status badge links, which previously pointed at the root of the host. The overview lists the callback URLs to register with an identity provider.
+  - The overview now explains how to retrieve the initial `admin` password.
+  - The NKP dashboard link now points at `https://<global.domain>/mdr/argo-cd/` instead of a path relative to the cluster's ingress address.
 - [Dynatrace Operator](applications/dynatrace-operator/1.11.1-mdr.1/) `1.11.1` -> `1.11.1-mdr.1`
   - The chart is now installed from Dynatrace's classic Helm repository instead of the OCI registry on ECR Public, which frequently rate limits anonymous pulls. The chart itself is unchanged.
+- [Kasten K10](applications/k10/9.0.5-mdr.7/) `9.0.5-mdr.6` -> `9.0.5-mdr.7`
+  - The NKP dashboard entry now reports the correct version.
+- [Open WebUI](applications/open-webui/18.0.0-mdr.2/) `18.0.0-mdr.1` -> `18.0.0-mdr.2` (chart `18.0.0`, unchanged)
+  - `WEBUI_URL` is now `https://<ingress.host>`. The chart previously set it to `http://`, as TLS is terminated by Traefik rather than configured on the ingress, which broke OAuth/SSO redirects and generated links.
+  - Added an NKP dashboard link, pointing at `https://<ingress.host>/`.
 - [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.2/) `0.68.1` -> `0.68.2` (operator `v0.75.0` -> `v0.75.2`)
 
 ## [0.3.0] - 2026-11-11
@@ -30,7 +37,7 @@
   - **Now installs into the `dynatrace` namespace** instead of the workspace namespace, matching the upstream chart defaults and Dynatrace documentation. Create `DynaKube` resources there.
   - `DynaKube` API versions `v1beta1`–`v1beta4` are no longer served; use `v1beta5` or `v1beta6`.
   - The overview now links to the Dynatrace Kubernetes quickstart for next steps (creating a `DynaKube`).
-- [Open WebUI](applications/open-webui/18.0.0-mdr.1/) `18.0.0` -> `18.0.0-mdr.1`
+- Open WebUI `18.0.0` -> `18.0.0-mdr.1`
   - **Now exposed through the NKP Traefik ingress instead of a `LoadBalancer` service.** A hostname must be set with the `ingress.host` Helm value (default `chat.example.com`).
 
 
@@ -63,7 +70,7 @@
 
 ### Updated
 
-- [Kasten K10](applications/k10/9.0.5-mdr.6/) `9.0.5-mdr.5` -> `9.0.5-mdr.6`
+- Kasten K10 `9.0.5-mdr.5` -> `9.0.5-mdr.6`
 
 ## [0.0.7] - 2026-10-22
 

@@ -25,17 +25,17 @@ My personal set of catalog applications for the Nutanix NKP platform. It serves 
 | --- | --- | --- | --- |
 | [Acme Issuers](applications/acme-issuers/0.4.1/) | 0.4.1 | tools | `oci://ghcr.io/markround/helm/acme-issuers` |
 | [Arcadians](applications/arcadians/0.1.0/) | 0.1.0 | games | _(plain manifests)_ |
-| [Argo CD](applications/argo-cd/10.18.0/) | 10.18.0 | tools | `oci://ghcr.io/argoproj/argo-helm/argo-cd` |
+| [Argo CD](applications/argo-cd/10.18.0-mdr.1/) | 10.18.0-mdr.1 | tools | `oci://ghcr.io/argoproj/argo-helm/argo-cd` |
 | [Descheduler](applications/descheduler/0.37.0/) | 0.37.0 | tools | `https://kubernetes-sigs.github.io/descheduler/` |
 | [Dynatrace Operator](applications/dynatrace-operator/1.11.1-mdr.1/) | 1.11.1-mdr.1 | observability | `https://raw.githubusercontent.com/Dynatrace/dynatrace-operator/main/config/helm/repos/stable` |
 | [ECK Elasticsearch](applications/eck-elasticsearch/0.20.0/) | 0.20.0 | observability | `https://helm.elastic.co` |
 | [ECK Kibana](applications/eck-kibana/0.20.0/) | 0.20.0 | observability | `https://helm.elastic.co` |
 | [ECK Operator](applications/eck-operator/3.5.0/) | 3.5.0 | observability | `https://helm.elastic.co` |
 | [GitLab](applications/gitlab/9.11.16/) | 9.11.16 | general | `oci://registry.gitlab.com/charts/charts.gitlab.io/release/gitlab` |
-| [Kasten K10](applications/k10/9.0.5-mdr.6/) | 9.0.5-mdr.6 | backup | `https://charts.kasten.io/` |
+| [Kasten K10](applications/k10/9.0.5-mdr.7/) | 9.0.5-mdr.7 | backup | `https://charts.kasten.io/` |
 | [MDR Common](applications/mdr-common/0.1.0/) | 0.1.0 | general | _(plain manifests)_ |
 | [MDR Demo](applications/mdr-demo/0.1.2/) | 0.1.2 | general | _(plain manifests)_ |
-| [Open WebUI](applications/open-webui/18.0.0-mdr.1/) | 18.0.0-mdr.1 | inferencing-and-serving | `oci://ghcr.io/open-webui/helm-charts/open-webui` |
+| [Open WebUI](applications/open-webui/18.0.0-mdr.2/) | 18.0.0-mdr.2 | inferencing-and-serving | `oci://ghcr.io/open-webui/helm-charts/open-webui` |
 | [Valkey](applications/valkey/0.12.1/) | 0.12.1 | general | `oci://ghcr.io/valkey-io/valkey-helm/valkey` |
 | [Vault](applications/vault/0.34.1/) | 0.34.1 | security | `https://helm.releases.hashicorp.com` |
 | [VictoriaMetrics Operator](applications/victoria-metrics-operator/0.68.2/) | 0.68.2 | observability | `oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator` |

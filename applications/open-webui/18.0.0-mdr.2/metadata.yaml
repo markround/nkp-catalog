@@ -37,7 +37,9 @@ overview: |-
     host: <YOUR HOSTNAME>
   ```
 
-  The default is `chat.example.com`. Once deployed, browse to `https://<YOUR HOSTNAME>`.
+  The default is `chat.example.com`. Once deployed, browse to `https://<YOUR HOSTNAME>`, or use the link on the NKP dashboard, which is built from the same value.
+
+  Open WebUI's own URL (`WEBUI_URL`, used for OAuth/SSO redirects and generated links) is also set to `https://<YOUR HOSTNAME>` automatically.
 
   ## Initial admin account
   There is no default username or password. The **first account created** through the web UI's sign-up page becomes the administrator, so create it as soon as the service is reachable.

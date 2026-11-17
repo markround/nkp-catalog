@@ -71,3 +71,24 @@ data:
     notifications:
       metrics:
         enabled: true
+
+    # NKP dashboard link. Created through the chart rather than as a static
+    # manifest so the link can follow global.domain (the ingress only matches
+    # that host). The chart renders extraObjects through tpl. A map is used
+    # rather than a list, so additional extraObjects in user values are merged
+    # instead of replacing this.
+    extraObjects:
+      nkp-dashboard-link:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: argo-cd-dashboard-link
+          namespace: ${releaseNamespace}
+          labels:
+            kommander.d2iq.io/application: argo-cd
+        data:
+          dashboardLink: "https://{{ .Values.global.domain }}/mdr/argo-cd/"
+          docsLink: "https://argo-cd.readthedocs.io/en/stable/"
+          name: Argo CD
+          # Catalog application version, update on every version bump
+          version: "10.18.0-mdr.1"

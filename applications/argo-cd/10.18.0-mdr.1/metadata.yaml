@@ -40,7 +40,17 @@ overview: |-
     domain: <YOUR HOSTNAME>
   ```
 
-  Once deployed, browse to `https://<YOUR HOSTNAME>/mdr/argo-cd/`.
+  Once deployed, browse to `https://<YOUR HOSTNAME>/mdr/argo-cd/`, or use the link on the NKP dashboard, which is also built from `global.domain`.
+
+  ## Initial admin credentials
+  The username is `admin`. On first start, Argo CD generates a random password and stores it in the `argocd-initial-admin-secret` Secret, in the workspace namespace Argo CD is deployed to. Retrieve it with:
+
+  ```
+  kubectl -n <WORKSPACE NAMESPACE> get secret argocd-initial-admin-secret \
+    -o jsonpath="{.data.password}" | base64 -d; echo
+  ```
+
+  Change the password after logging in (**User Info -> Update Password** in the UI, or `argocd account update-password`), then delete the `argocd-initial-admin-secret` Secret. Argo CD does not use it after the first start; it is only kept so the initial password can be retrieved.
 
   ## SSO
   Argo CD's URL is set to `https://<YOUR HOSTNAME>/mdr/argo-cd` automatically from `global.domain`. When configuring SSO, register the following callback URL with your identity provider:
