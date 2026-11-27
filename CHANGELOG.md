@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Nothing yet...
+
+## [0.4.0] - 2026-11-27
+
 ### Added
 
 - [Descheduler](applications/descheduler/0.37.0/) `0.37.0` - evicts pods so they can be rescheduled onto better nodes, installed into `kube-system`.

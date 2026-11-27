@@ -78,7 +78,7 @@ Or pick a released tag with (theoretically!) less chance of breakage:
 ```bash
 nkp create catalog-collection \
   --url oci://ghcr.io/markround/nkp-catalog/catalog/collection \
-  --tag 0.3.0 \
+  --tag 0.4.0 \
   --workspace kommander-workspace
 ```
 
@@ -96,6 +96,6 @@ kubectl patch \
   --type merge \
   -n kommander \
   ocirepository catalog-collection \
-  --patch '{"spec": {"ref":{"tag":"0.3.0"}}}'
+  --patch '{"spec": {"ref":{"tag":"0.4.0"}}}'
 ```
 
